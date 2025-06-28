@@ -15,6 +15,8 @@ import com.example.codecup.ui.home.CoffeeList
 import com.example.codecup.ui.home.LoyaltyCard
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.graphics.Color
 
 
 
@@ -25,31 +27,63 @@ fun HomeScreen(
 ) {
     Scaffold(
         topBar = { AppHeader(userName = "Anderson") },
-        bottomBar = { AppBottomNav(navController) }
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
-                .padding(horizontal = 16.dp, vertical = 12.dp)
                 .fillMaxSize()
         ) {
-            LoyaltyCard(
-                stamps = viewModel.stamps,
-                points = TODO(),
-                tier = TODO()
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(text = "Choose your coffee", style = MaterialTheme.typography.titleMedium)
-            Spacer(modifier = Modifier.height(8.dp))
-            CoffeeList(
-                coffeeList = viewModel.coffeeList,
-                onItemClick = { coffeeId ->
-                    navController.navigate("details/$coffeeId")
+            Surface(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 12.dp),
+                shape = RoundedCornerShape(16.dp),
+                shadowElevation = 8.dp,
+                color = Color(0xFF324A59)
+            ) {
+                LoyaltyCard(stamps = viewModel.stamps)
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+            Surface(
+                modifier = Modifier
+                    .fillMaxSize(),
+                color = Color(0xFF324A59),
+                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+                shadowElevation = 8.dp
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 20.dp, vertical = 20.dp),
+                    verticalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Column {
+                        Spacer(modifier = Modifier.height(15.dp))
+                        Text(
+                            text = "Choose your coffee",
+                            style = MaterialTheme.typography.titleMedium.copy(
+                                color = Color(0xFFCBD4D9)
+                            )
+                        )
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        CoffeeList(
+                            coffeeList = viewModel.coffeeList,
+                            onItemClick = { coffeeId ->
+                                navController.navigate("details/$coffeeId")
+                            },
+
+                        )
+                    }
+                    AppBottomNav(navController = navController)
                 }
-            )
+            }
         }
     }
 }
+
+
 
 @Preview(showBackground = true)
 @Composable

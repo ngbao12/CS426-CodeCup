@@ -12,27 +12,56 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.material3.Icon
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.res.painterResource
+import com.example.codecup.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppHeader(userName: String) {
-    TopAppBar(
-        title = {
-            Column {
-                Text(
-                    text = "Good morning",
-                    fontSize = 14.sp,
-                    color = Color(0xFFD8D8D8)
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 20.dp, vertical = 16.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        // Left: greeting text
+        Column {
+            Text(
+                text = "Good morning",
+                style = MaterialTheme.typography.labelLarge.copy(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                    fontSize = 14.sp
                 )
-                Text(
-                    text = userName,
-                    fontSize = 18.sp,
+            )
+            Text(
+                text = userName,
+                style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFF001833)
+                    fontSize = 20.sp
                 )
-            }
+            )
         }
-    )
+
+        // Right: cart + profile icons
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_cart),
+                contentDescription = "Cart",
+                tint = MaterialTheme.colorScheme.onSurface
+            )
+            Icon(
+                painter = painterResource(id = R.drawable.ic_profile),
+                contentDescription = "Profile",
+                tint = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    }
 }
 
 @Preview(showBackground = true)

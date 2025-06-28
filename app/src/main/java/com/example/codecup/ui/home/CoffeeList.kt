@@ -13,36 +13,58 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import com.example.codecup.data.model.CoffeeItem
 import androidx.compose.ui.unit.Dp
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+
 
 @Composable
-fun CoffeeList(coffeeList: List<CoffeeItem>, onItemClick: (Int) -> Unit) {
+fun CoffeeList(
+    coffeeList: List<CoffeeItem>,
+    onItemClick: (Int) -> Unit
+) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(8.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(12.dp)
+        contentPadding = PaddingValues(vertical = 4.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        horizontalArrangement = Arrangement.spacedBy(16.dp),
+        modifier = Modifier.fillMaxWidth()
     ) {
         items(coffeeList) { coffee ->
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
-                    .clickable { onItemClick(coffee.id) }
+                    .clickable { onItemClick(coffee.id) },
+                shape = RoundedCornerShape(16.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White)
             ) {
                 Column(
                     modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                        .fillMaxSize()
+                        .padding(15.dp),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Image(
                         painter = painterResource(id = coffee.imageRes),
                         contentDescription = coffee.name,
-                        modifier = Modifier.size(64.dp)
+                        modifier = Modifier.size(100.dp)
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Text(text = coffee.name)
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = coffee.name,
+                        style = MaterialTheme.typography.bodyMedium.copy(
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color(0xFF324A59)
+                        ),
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
         }
