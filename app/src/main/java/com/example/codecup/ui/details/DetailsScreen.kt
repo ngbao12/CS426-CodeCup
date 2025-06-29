@@ -59,6 +59,7 @@ fun DetailsScreen(
             modifier = Modifier
                 .padding(padding)
                 .padding(16.dp)
+                .padding(horizontal = 20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
             Box(
@@ -94,13 +95,22 @@ fun DetailsScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(12.dp))
+            HorizontalDivider(
+                color = Color.LightGray.copy(alpha = 0.3f),
+                thickness = 1.dp,
+                modifier = Modifier.padding(vertical = 6.dp)
+            )
 
             OptionSelector(
                 label = "Shot",
                 textOptions = listOf("Single", "Double"),
                 selectedIndex = shotIndex,
                 onSelect = { viewModel.selectShot(it) }
+            )
+            HorizontalDivider(
+                color = Color.LightGray.copy(alpha = 0.3f),
+                thickness = 1.dp,
+                modifier = Modifier.padding(vertical = 6.dp)
             )
 
             OptionSelector(
@@ -110,11 +120,21 @@ fun DetailsScreen(
                 onSelect = { viewModel.selectSelect(it) }
             )
 
+            HorizontalDivider(
+                color = Color.LightGray.copy(alpha = 0.3f),
+                thickness = 1.dp,
+                modifier = Modifier.padding(vertical = 6.dp)
+            )
             OptionSelector(
                 label = "Size",
                 iconOptions = viewModel.sizeIcons,
                 selectedIndex = sizeIndex,
                 onSelect = { viewModel.selectSize(it) }
+            )
+            HorizontalDivider(
+                color = Color.LightGray.copy(alpha = 0.3f),
+                thickness = 1.dp,
+                modifier = Modifier.padding(vertical = 6.dp)
             )
 
             OptionSelector(
