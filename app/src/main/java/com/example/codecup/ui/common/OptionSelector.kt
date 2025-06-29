@@ -15,16 +15,32 @@ import com.example.codecup.R
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Circle
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
+import com.example.codecup.ui.details.IconData
+import androidx.compose.foundation.background
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import android.util.Log
+import androidx.compose.foundation.layout.Arrangement
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OptionSelector(
     label: String,
     textOptions: List<String>? = null,
-    iconOptions: List<@Composable () -> Unit>? = null,
+    iconOptions: List<IconData>? = null,
     selectedIndex: Int,
     onSelect: (Int) -> Unit
 ) {
+    Log.d("OptionSelector", "OptionSelector recomposed with label=$label, selectedIndex=$selectedIndex")
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -44,86 +60,54 @@ fun OptionSelector(
             verticalAlignment = Alignment.CenterVertically
         ) {
             textOptions?.forEachIndexed { index, option ->
-                val isSelected = selectedIndex == index
-                OutlinedButton(
-                    onClick = { onSelect(index) },
-                    border = BorderStroke(1.dp, if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray),
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .height(28.dp)
-                ) {
-                    Text(option, color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray, style= MaterialTheme.typography.bodySmall)
+                key(index) {
+                    val isSelected = selectedIndex == index
+                    OutlinedButton(
+                        onClick = {
+                            Log.d("OptionSelector", "Text option clicked: index=$index, option=$option")
+                            onSelect(index)
+                        },
+                        border = BorderStroke(2.dp, if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray),
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .height(28.dp),
+                        colors = ButtonDefaults.outlinedButtonColors(
+                            contentColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
+                        )
+                    ) {
+                        Text(
+                            text = option,
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
                 }
             }
 
-            iconOptions?.forEachIndexed { index, iconComposable ->
-                val alpha = if (index == selectedIndex) 1f else 0.3f
-                Box(
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .clickable { onSelect(index) }
-                        .alpha(alpha)
-                ) {
-                    iconComposable()
+            iconOptions?.forEachIndexed { index, iconData ->
+                key(index) {
+                    val isSelected = selectedIndex == index
+                    IconButton(
+                        onClick = {
+                            Log.d("OptionSelector", "Icon option clicked: index=$index, description=${iconData.description}")
+                            onSelect(index)
+                        },
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(48.dp)
+                            .background(
+                                color = if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else Color.Transparent,
+                                shape = RoundedCornerShape(8.dp)
+                            )
+                    ) {
+                        Icon(
+                            painter = painterResource(id = iconData.resId),
+                            contentDescription = iconData.description,
+                            modifier = Modifier.size(iconData.size.dp),
+                            tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
+                        )
+                    }
                 }
             }
         }
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewSizeSelector() {
-    var selectedSize by remember { mutableStateOf(1) }
-
-    val sizeIcons = listOf<@Composable () -> Unit>(
-        {
-            Box(
-                modifier = Modifier
-                    .size(48.dp),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_ice_s),
-                    contentDescription = "Small",
-                    modifier = Modifier.size(19.dp)
-                )
-            }
-        },
-        {
-            Box(
-                modifier = Modifier
-                    .size(48.dp),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_ice_m),
-                    contentDescription = "Medium",
-                    modifier = Modifier.size(36.dp)
-                )
-            }
-        },
-        {
-            Box(
-                modifier = Modifier
-                    .size(48.dp),
-                contentAlignment = Alignment.BottomCenter
-            ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_ice_l),
-                    contentDescription = "Large",
-                    modifier = Modifier.size(40.dp)
-                )
-            }
-        }
-    )
-
-
-    OptionSelector(
-        label = "Size",
-        iconOptions = sizeIcons,
-        selectedIndex = selectedSize,
-        onSelect = { selectedSize = it }
-    )
 }

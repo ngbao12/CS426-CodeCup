@@ -10,86 +10,21 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.example.codecup.R
 
-@Composable
-fun getSelectIcons(): List<@Composable () -> Unit> = listOf(
-    {
-        Box(Modifier.size(48.dp), contentAlignment = Alignment.BottomCenter) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_select_hot),
-                contentDescription = "Hot",
-                modifier = Modifier.size(28.dp)
-            )
-        }
-    },
-    {
-        Box(Modifier.size(48.dp), contentAlignment = Alignment.BottomCenter) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_select_cold),
-                contentDescription = "Cold",
-                modifier = Modifier.size(28.dp)
-            )
-        }
-    }
+data class IconData(val resId: Int, val description: String, val size: Int)
+
+fun getSelectIcons(): List<IconData> = listOf(
+    IconData(R.drawable.ic_select_hot, "Hot", 28),
+    IconData(R.drawable.ic_select_cold, "Cold", 28)
 )
 
-@Composable
-fun getSizeIcons(): List<@Composable () -> Unit> = listOf(
-    {
-        Box(Modifier.size(48.dp), contentAlignment = Alignment.BottomCenter) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_size_s),
-                contentDescription = "Small",
-                modifier = Modifier.size(24.dp)
-            )
-        }
-    },
-    {
-        Box(Modifier.size(48.dp), contentAlignment = Alignment.BottomCenter) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_size_m),
-                contentDescription = "Medium",
-                modifier = Modifier.size(32.dp)
-            )
-        }
-    },
-    {
-        Box(Modifier.size(48.dp), contentAlignment = Alignment.BottomCenter) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_size_l),
-                contentDescription = "Large",
-                modifier = Modifier.size(40.dp)
-            )
-        }
-    }
+fun getSizeIcons(): List<IconData> = listOf(
+    IconData(R.drawable.ic_size_s, "Small", 24),
+    IconData(R.drawable.ic_size_m, "Medium", 32),
+    IconData(R.drawable.ic_size_l, "Large", 40)
 )
 
-@Composable
-fun getIceIcons(): List<@Composable () -> Unit> = listOf(
-    {
-        Box(Modifier.size(48.dp), contentAlignment = Alignment.BottomCenter) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_ice_s),
-                contentDescription = "Low Ice",
-                modifier = Modifier.size(16.dp)
-            )
-        }
-    },
-    {
-        Box(Modifier.size(48.dp), contentAlignment = Alignment.BottomCenter) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_ice_m),
-                contentDescription = "Medium Ice",
-                modifier = Modifier.size(32.dp)
-            )
-        }
-    },
-    {
-        Box(Modifier.size(48.dp), contentAlignment = Alignment.BottomCenter) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_ice_l),
-                contentDescription = "High Ice",
-                modifier = Modifier.size(34.dp)
-            )
-        }
-    }
+fun getIceIcons(): List<IconData> = listOf(
+    IconData(R.drawable.ic_ice_s, "Low Ice", 16),
+    IconData(R.drawable.ic_ice_m, "Medium Ice", 32),
+    IconData(R.drawable.ic_ice_l, "High Ice", 34)
 )

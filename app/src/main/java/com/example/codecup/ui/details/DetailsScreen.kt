@@ -1,54 +1,53 @@
 package com.example.codecup.ui.details
 
+import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.codecup.R
 import com.example.codecup.data.model.CoffeeItem
-import com.example.codecup.ui.common.OptionSelector
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
-import androidx.compose.foundation.background
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.ui.graphics.Color
 import com.example.codecup.ui.common.DetailsTopBar
+import com.example.codecup.ui.common.OptionSelector
 import com.example.codecup.viewmodel.DetailsViewModel
-import androidx.lifecycle.ViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
     navController: NavController,
     coffeeItem: CoffeeItem,
-    viewModel: DetailsViewModel =  DetailsViewModel()
+    viewModel: DetailsViewModel = viewModel()
 ) {
-    val quantity = viewModel.quantity
-    val shotIndex = viewModel.shotIndex
-    val selectIndex = viewModel.selectIndex
-    val sizeIndex = viewModel.sizeIndex
-    val iceIndex = viewModel.iceIndex
+    Log.d("DetailsScreen", "DetailsScreen recomposed with coffeeItem: $coffeeItem")
+
+    val quantity by viewModel.quantity
+    val shotIndex by viewModel.shotIndex
+    val selectIndex by viewModel.selectIndex
+    val sizeIndex by viewModel.sizeIndex
+    val iceIndex by viewModel.iceIndex
 
     val totalPrice = viewModel.calculateTotalPrice(coffeeItem.price)
 
-    val selectIcons = getSelectIcons()
-    val sizeIcons = getSizeIcons()
-    val iceIcons = getIceIcons()
-
     Scaffold(
+        containerColor = Color.White,
         topBar = {
             DetailsTopBar(
                 navController = navController,
@@ -97,21 +96,33 @@ fun DetailsScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            OptionSelector("Shot", textOptions = listOf("Single", "Double"), selectedIndex = shotIndex) {
-                viewModel.selectShot(it)
-            }
+            OptionSelector(
+                label = "Shot",
+                textOptions = listOf("Single", "Double"),
+                selectedIndex = shotIndex,
+                onSelect = { viewModel.selectShot(it) }
+            )
 
-            OptionSelector("Select", iconOptions = selectIcons, selectedIndex = selectIndex) {
-                viewModel.selectSelect(it)
-            }
+            OptionSelector(
+                label = "Select",
+                iconOptions = viewModel.selectIcons,
+                selectedIndex = selectIndex,
+                onSelect = { viewModel.selectSelect(it) }
+            )
 
-            OptionSelector("Size", iconOptions = sizeIcons, selectedIndex = sizeIndex) {
-                viewModel.selectSize(it)
-            }
+            OptionSelector(
+                label = "Size",
+                iconOptions = viewModel.sizeIcons,
+                selectedIndex = sizeIndex,
+                onSelect = { viewModel.selectSize(it) }
+            )
 
-            OptionSelector("Ice", iconOptions = iceIcons, selectedIndex = iceIndex) {
-                viewModel.selectIce(it)
-            }
+            OptionSelector(
+                label = "Ice",
+                iconOptions = viewModel.iceIcons,
+                selectedIndex = iceIndex,
+                onSelect = { viewModel.selectIce(it) }
+            )
 
             Spacer(modifier = Modifier.height(60.dp))
 
@@ -126,6 +137,7 @@ fun DetailsScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF324A59)),
                 onClick = { /* TODO: Add to cart */ },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -136,18 +148,4 @@ fun DetailsScreen(
             }
         }
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun DetailsScreenPreview() {
-    val navController = rememberNavController()
-    val coffeeItem = CoffeeItem(
-        id = 1,
-        name = "Cappuccino",
-        price = 3.5,
-        imageRes = R.drawable.cappuccino
-    )
-    DetailsScreen(navController, coffeeItem)
 }

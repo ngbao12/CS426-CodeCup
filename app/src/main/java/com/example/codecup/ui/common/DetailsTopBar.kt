@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.codecup.R
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,7 +37,9 @@ fun DetailsTopBar(
             IconButton(onClick = onCartClick) {
                 Icon(painter = painterResource(id = R.drawable.ic_cart), contentDescription = "Cart")
             }
-        }
+        },
+        colors = TopAppBarDefaults.topAppBarColors(
+            containerColor = Color.White)
     )
 }
 
