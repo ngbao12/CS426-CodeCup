@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 fun CoffeeList(
     coffeeList: List<CoffeeItem>,
-    onItemClick: (Int) -> Unit
+    onItemClick: (CoffeeItem) -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -39,7 +39,7 @@ fun CoffeeList(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
-                    .clickable { onItemClick(coffee.id) },
+                    .clickable { onItemClick(coffee) },
                 shape = RoundedCornerShape(16.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
                 colors = CardDefaults.cardColors(containerColor = Color.White)

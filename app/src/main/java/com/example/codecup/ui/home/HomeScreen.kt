@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
-
+import com.example.codecup.navigation.Screen
 
 
 @Composable
@@ -70,10 +70,9 @@ fun HomeScreen(
 
                         CoffeeList(
                             coffeeList = viewModel.coffeeList,
-                            onItemClick = { coffeeId ->
-                                navController.navigate("details/$coffeeId")
-                            },
-
+                            onItemClick = { coffeeItem ->
+                                navController.navigate(Screen.Details.createRoute(coffeeItem))
+                            }
                         )
                     }
                     AppBottomNav(navController = navController)

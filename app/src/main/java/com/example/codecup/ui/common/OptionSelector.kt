@@ -50,9 +50,9 @@ fun OptionSelector(
                     border = BorderStroke(1.dp, if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray),
                     modifier = Modifier
                         .padding(start = 8.dp)
-                        .height(36.dp)
+                        .height(28.dp)
                 ) {
-                    Text(option, color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray)
+                    Text(option, color = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray, style= MaterialTheme.typography.bodySmall)
                 }
             }
 
@@ -81,13 +81,13 @@ fun PreviewSizeSelector() {
         {
             Box(
                 modifier = Modifier
-                    .size(48.dp), // khung nền cố định
+                    .size(48.dp),
                 contentAlignment = Alignment.BottomCenter
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_size_s),
+                    painter = painterResource(id = R.drawable.ic_ice_s),
                     contentDescription = "Small",
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(19.dp)
                 )
             }
         },
@@ -98,9 +98,9 @@ fun PreviewSizeSelector() {
                 contentAlignment = Alignment.BottomCenter
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_size_m),
+                    painter = painterResource(id = R.drawable.ic_ice_m),
                     contentDescription = "Medium",
-                    modifier = Modifier.size(32.dp)
+                    modifier = Modifier.size(36.dp)
                 )
             }
         },
@@ -111,7 +111,7 @@ fun PreviewSizeSelector() {
                 contentAlignment = Alignment.BottomCenter
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_size_l),
+                    painter = painterResource(id = R.drawable.ic_ice_l),
                     contentDescription = "Large",
                     modifier = Modifier.size(40.dp)
                 )

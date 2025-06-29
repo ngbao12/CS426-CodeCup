@@ -6,6 +6,12 @@ import androidx.navigation.compose.composable
 import com.example.codecup.navigation.Screen
 import com.example.codecup.ui.home.HomeScreen
 import com.example.codecup.ui.SplashScreen
+import com.example.codecup.data.model.CoffeeItem
+import com.example.codecup.ui.details.DetailsScreen
+import android.util.Log
+import com.example.codecup.R
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
@@ -15,6 +21,25 @@ fun AppNavGraph(navController: NavHostController) {
         }
         composable(route = Screen.Home.route) {
             HomeScreen(navController)
+        }
+
+        composable(
+            route = Screen.Details.route,
+            arguments = listOf(
+                navArgument("coffeeId") { type = NavType.IntType },
+                navArgument("coffeeName") { type = NavType.StringType },
+                navArgument("coffeePrice") { type = NavType.FloatType },
+                navArgument("imageResId") { type = NavType.IntType }
+            )
+        ) { backStackEntry ->
+            val id = backStackEntry.arguments?.getInt("coffeeId") ?: return@composable
+            val name = backStackEntry.arguments?.getString("coffeeName") ?: ""
+            val price = backStackEntry.arguments?.getFloat("coffeePrice")?.toDouble() ?: 0.0
+            val imageRes = backStackEntry.arguments?.getInt("imageResId") ?: R.drawable.americano
+
+            val coffeeItem = CoffeeItem(id, name, price, imageRes)
+
+            DetailsScreen(navController, coffeeItem)
         }
         composable(Screen.Rewards.route) {
             //RewardsScreen(navController)
