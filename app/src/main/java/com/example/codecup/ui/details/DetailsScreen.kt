@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -13,7 +12,6 @@ import androidx.compose.material.icons.filled.Remove
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,16 +23,21 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.codecup.R
 import com.example.codecup.data.model.CoffeeItem
+import com.example.codecup.data.model.CartItem
 import com.example.codecup.ui.common.DetailsTopBar
 import com.example.codecup.ui.common.OptionSelector
+import com.example.codecup.viewmodel.CartViewModel
 import com.example.codecup.viewmodel.DetailsViewModel
+import androidx.compose.foundation.shape.RoundedCornerShape
+import com.example.codecup.navigation.Screen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailsScreen(
     navController: NavController,
     coffeeItem: CoffeeItem,
-    viewModel: DetailsViewModel = viewModel()
+    viewModel: DetailsViewModel = viewModel(),
+    cartViewModel: CartViewModel = viewModel()
 ) {
     Log.d("DetailsScreen", "DetailsScreen recomposed with coffeeItem: $coffeeItem")
 
@@ -46,19 +49,25 @@ fun DetailsScreen(
 
     val totalPrice = viewModel.calculateTotalPrice(coffeeItem.price)
 
+    val shotOptions = listOf("Single", "Double")
+    val selectOptions = listOf("Hot", "Cold")
+    val sizeOptions = listOf("Small", "Medium", "Large")
+    val iceOptions = listOf("Less Ice", "Normal", "More Ice")
+
     Scaffold(
         containerColor = Color.White,
         topBar = {
             DetailsTopBar(
                 navController = navController,
-                onCartClick = {}
+                onCartClick = {
+                    navController.navigate(Screen.Cart.route)
+                }
             )
         }
     ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
-                .padding(16.dp)
                 .padding(horizontal = 20.dp)
                 .verticalScroll(rememberScrollState())
         ) {
@@ -95,54 +104,18 @@ fun DetailsScreen(
                 }
             }
 
-            HorizontalDivider(
-                color = Color.LightGray.copy(alpha = 0.3f),
-                thickness = 1.dp,
-                modifier = Modifier.padding(vertical = 6.dp)
-            )
+            HorizontalDivider(color = Color.LightGray.copy(alpha = 0.3f), thickness = 1.dp, modifier = Modifier.padding(vertical = 6.dp))
 
-            OptionSelector(
-                label = "Shot",
-                textOptions = listOf("Single", "Double"),
-                selectedIndex = shotIndex,
-                onSelect = { viewModel.selectShot(it) }
-            )
-            HorizontalDivider(
-                color = Color.LightGray.copy(alpha = 0.3f),
-                thickness = 1.dp,
-                modifier = Modifier.padding(vertical = 6.dp)
-            )
+            OptionSelector("Shot", textOptions = shotOptions, selectedIndex = shotIndex, onSelect = { viewModel.selectShot(it) })
+            HorizontalDivider(color = Color.LightGray.copy(alpha = 0.3f), thickness = 1.dp, modifier = Modifier.padding(vertical = 6.dp))
 
-            OptionSelector(
-                label = "Select",
-                iconOptions = viewModel.selectIcons,
-                selectedIndex = selectIndex,
-                onSelect = { viewModel.selectSelect(it) }
-            )
+            OptionSelector("Select", iconOptions = viewModel.selectIcons, selectedIndex = selectIndex, onSelect = { viewModel.selectSelect(it) })
+            HorizontalDivider(color = Color.LightGray.copy(alpha = 0.3f), thickness = 1.dp, modifier = Modifier.padding(vertical = 6.dp))
 
-            HorizontalDivider(
-                color = Color.LightGray.copy(alpha = 0.3f),
-                thickness = 1.dp,
-                modifier = Modifier.padding(vertical = 6.dp)
-            )
-            OptionSelector(
-                label = "Size",
-                iconOptions = viewModel.sizeIcons,
-                selectedIndex = sizeIndex,
-                onSelect = { viewModel.selectSize(it) }
-            )
-            HorizontalDivider(
-                color = Color.LightGray.copy(alpha = 0.3f),
-                thickness = 1.dp,
-                modifier = Modifier.padding(vertical = 6.dp)
-            )
+            OptionSelector("Size", iconOptions = viewModel.sizeIcons, selectedIndex = sizeIndex, onSelect = { viewModel.selectSize(it) })
+            HorizontalDivider(color = Color.LightGray.copy(alpha = 0.3f), thickness = 1.dp, modifier = Modifier.padding(vertical = 6.dp))
 
-            OptionSelector(
-                label = "Ice",
-                iconOptions = viewModel.iceIcons,
-                selectedIndex = iceIndex,
-                onSelect = { viewModel.selectIce(it) }
-            )
+            OptionSelector("Ice", iconOptions = viewModel.iceIcons, selectedIndex = iceIndex, onSelect = { viewModel.selectIce(it) })
 
             Spacer(modifier = Modifier.height(60.dp))
 
@@ -158,7 +131,21 @@ fun DetailsScreen(
 
             Button(
                 colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF324A59)),
-                onClick = { /* TODO: Add to cart */ },
+                onClick = {
+                    val cartItem = CartItem(
+                        id = coffeeItem.id,
+                        name = coffeeItem.name,
+                        price = totalPrice,
+                        quantity = quantity,
+                        imageRes = coffeeItem.imageRes,
+                        shot = shotOptions[shotIndex],
+                        select = selectOptions[selectIndex],
+                        size = sizeOptions[sizeIndex],
+                        ice = iceOptions[iceIndex]
+                    )
+                    cartViewModel.addToCart(cartItem)
+                    navController.navigate(Screen.Cart.route)
+                },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),
@@ -169,3 +156,4 @@ fun DetailsScreen(
         }
     }
 }
+

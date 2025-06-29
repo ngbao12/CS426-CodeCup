@@ -26,8 +26,8 @@ fun HomeScreen(
     viewModel: HomeViewModel = viewModel()
 ) {
     Scaffold(
-        topBar = { AppHeader(userName = "Anderson") },
-        containerColor = MaterialTheme.colorScheme.background
+        containerColor = Color.White,
+        topBar = { AppHeader(userName = "Anderson", navController = navController) },
     ) { padding ->
         Column(
             modifier = Modifier

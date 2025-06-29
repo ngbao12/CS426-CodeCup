@@ -15,11 +15,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.material3.Icon
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavController
 import com.example.codecup.R
+import androidx.navigation.compose.rememberNavController
+import androidx.compose.material3.IconButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppHeader(userName: String) {
+fun AppHeader(userName: String, navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -50,16 +53,20 @@ fun AppHeader(userName: String) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_cart),
-                contentDescription = "Cart",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
-            Icon(
-                painter = painterResource(id = R.drawable.ic_profile),
-                contentDescription = "Profile",
-                tint = MaterialTheme.colorScheme.onSurface
-            )
+            IconButton(onClick = { navController.navigate("cart") }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_cart),
+                    contentDescription = "Cart",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
+            IconButton(onClick = { navController.navigate("profile") }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_profile),
+                    contentDescription = "Profile",
+                    tint = MaterialTheme.colorScheme.onSurface
+                )
+            }
         }
     }
 }
@@ -67,5 +74,6 @@ fun AppHeader(userName: String) {
 @Preview(showBackground = true)
 @Composable
 fun AppHeaderPreview() {
-    AppHeader(userName = "Ngoc Bao")
+    val navController = rememberNavController()
+    AppHeader(userName = "Ngoc Bao", navController = navController)
 }

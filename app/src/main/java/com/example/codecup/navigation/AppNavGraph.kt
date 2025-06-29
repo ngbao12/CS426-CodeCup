@@ -12,10 +12,16 @@ import android.util.Log
 import com.example.codecup.R
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
+import com.example.codecup.ui.cart.CartScreen
+import androidx.activity.ComponentActivity
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.codecup.viewmodel.CartViewModel
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
+        val cartViewModel: CartViewModel = CartViewModel()
         composable(Screen.Splash.route) {
             SplashScreen(navController)
         }
@@ -39,7 +45,10 @@ fun AppNavGraph(navController: NavHostController) {
 
             val coffeeItem = CoffeeItem(id, name, price, imageRes)
 
-            DetailsScreen(navController, coffeeItem)
+            DetailsScreen(navController, coffeeItem,cartViewModel= cartViewModel)
+        }
+        composable(Screen.Cart.route) {
+            CartScreen(navController, viewModel = cartViewModel)
         }
         composable(Screen.Rewards.route) {
             //RewardsScreen(navController)

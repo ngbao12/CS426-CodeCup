@@ -19,7 +19,6 @@ import com.example.codecup.viewmodel.CartViewModel
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.codecup.ui.cart.SwipeToDismissItem
@@ -31,6 +30,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
+
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -43,13 +53,19 @@ fun CartScreen(
     val totalPrice = viewModel.getTotalPrice()
 
     Scaffold(
+        containerColor = Color.White,
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
                     Box(Modifier.fillMaxWidth()) {
                         Text(
                             text = "My Cart",
-                            modifier = Modifier.align(Alignment.Center)
+                            modifier = Modifier.align(Alignment.Center),
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.titleLarge.copy(
+                                color = Color(0xFF324A59),
+                                fontWeight = FontWeight.Bold
+                            )
                         )
                     }
                 },
@@ -57,7 +73,10 @@ fun CartScreen(
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Color.White
+                )
             )
         }
     ) { padding ->
