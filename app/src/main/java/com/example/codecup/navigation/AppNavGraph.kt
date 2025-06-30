@@ -16,12 +16,23 @@ import com.example.codecup.ui.cart.CartScreen
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import android.app.Application
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.codecup.viewmodel.CartViewModel
+import com.example.codecup.viewmodel.CartViewModelFactory
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
+
 
 @Composable
 fun AppNavGraph(navController: NavHostController) {
+    val context = LocalContext.current.applicationContext as Application
+    val cartViewModel: CartViewModel = viewModel(
+        factory = CartViewModelFactory(context)
+    )
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
-        val cartViewModel: CartViewModel = CartViewModel()
         composable(Screen.Splash.route) {
             SplashScreen(navController)
         }

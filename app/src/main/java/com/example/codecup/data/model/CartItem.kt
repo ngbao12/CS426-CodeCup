@@ -1,9 +1,12 @@
 package com.example.codecup.data.model
 
 import androidx.annotation.DrawableRes
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-
+@Entity(tableName = "cart_items")
 data class CartItem(
+    @PrimaryKey(autoGenerate = true) val uid: Int = 0,
     val id: Int,
     val name: String,
     val price: Double,
