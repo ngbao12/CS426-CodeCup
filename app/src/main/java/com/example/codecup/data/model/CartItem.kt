@@ -12,4 +12,16 @@ data class CartItem(
     val select: String,
     val size: String,
     val ice: String
-)
+){
+    val uniqueKey: String
+        get() = "$id-$shot-$select-$size-$ice"
+}
+
+fun CartItem.isSameAs(other: CartItem): Boolean {
+    return this.id == other.id &&
+            this.shot == other.shot &&
+            this.select == other.select &&
+            this.size == other.size &&
+            this.ice == other.ice
+}
+

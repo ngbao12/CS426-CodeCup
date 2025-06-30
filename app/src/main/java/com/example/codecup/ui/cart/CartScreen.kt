@@ -91,7 +91,7 @@ fun CartScreen(
                     .weight(1f)
                     .padding(top = 8.dp)
             ) {
-                items(cartItems, key = { it.id }) { item ->
+                items(cartItems, key = { it.uniqueKey }) { item ->
                     SwipeToDismissItem(
                         item = item,
                         onRemove = { viewModel.removeItem(it) }
