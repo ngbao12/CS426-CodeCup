@@ -1,9 +1,13 @@
 package com.example.codecup.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "user_profile")
 data class UserProfile(
-    val id: Int,
+    @PrimaryKey val id: Int = 0,
     val name: String,
+    val phone: String,
     val email: String,
-    val phoneNumber: String,
     val address: String
 )

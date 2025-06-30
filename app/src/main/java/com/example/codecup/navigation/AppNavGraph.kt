@@ -24,6 +24,8 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.codecup.ui.OrderSuccess.OrderSuccessScreen
+import com.example.codecup.ui.profile.ProfileScreen
 
 
 @Composable
@@ -60,6 +62,12 @@ fun AppNavGraph(navController: NavHostController) {
         }
         composable(Screen.Cart.route) {
             CartScreen(navController, viewModel = cartViewModel)
+        }
+        composable(Screen.OrderSuccess.route) {
+            OrderSuccessScreen(navController)
+        }
+        composable(Screen.Profile.route) {
+            ProfileScreen(navController = navController)
         }
         composable(Screen.Rewards.route) {
             //RewardsScreen(navController)

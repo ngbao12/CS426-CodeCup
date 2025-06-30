@@ -20,7 +20,7 @@ class CartViewModel(application: Application) : AndroidViewModel(application) {
         application,
         AppDatabase::class.java,
         "cart-database"
-    ).build()
+    ).fallbackToDestructiveMigration().build()
 
     private val cartDao = db.cartDao()
 
