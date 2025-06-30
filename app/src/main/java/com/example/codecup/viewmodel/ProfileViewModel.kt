@@ -24,6 +24,9 @@ class ProfileViewModel(
     val userName: String
         get() = _profile.value?.name ?: "Guest"
 
+    val address: String
+        get() = _profile.value?.address ?: "Unknown"
+
     init {
         viewModelScope.launch {
             _profile.value = repository.getProfile()

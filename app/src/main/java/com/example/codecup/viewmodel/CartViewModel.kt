@@ -56,6 +56,14 @@ class CartViewModel(
     fun getTotalPrice(): Double {
         return _cartItems.sumOf { it.price * it.quantity }
     }
+
+    fun clearCart() {
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.clearAll()
+            _cartItems.clear()
+        }
+    }
+
 }
 
 class CartViewModelFactory(

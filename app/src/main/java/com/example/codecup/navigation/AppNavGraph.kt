@@ -20,6 +20,9 @@ import com.example.codecup.ui.screen.OrderSuccessScreen
 import com.example.codecup.ui.screen.ProfileScreen
 import com.example.codecup.viewmodel.ProfileViewModel
 import com.example.codecup.viewmodel.ProfileViewModelFactory
+import com.example.codecup.viewmodel.OrdersViewModel
+import com.example.codecup.viewmodel.OrdersViewModelFactory
+import com.example.codecup.ui.screen.OrdersScreen
 
 
 @Composable
@@ -30,6 +33,9 @@ fun AppNavGraph(navController: NavHostController) {
     )
     val profileViewModel: ProfileViewModel = viewModel(
         factory = ProfileViewModelFactory(context)
+    )
+    val ordersViewModel: OrdersViewModel = viewModel(
+        factory = OrdersViewModelFactory(context)
     )
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
@@ -58,7 +64,7 @@ fun AppNavGraph(navController: NavHostController) {
             DetailsScreen(navController, coffeeItem,cartViewModel= cartViewModel)
         }
         composable(Screen.Cart.route) {
-            CartScreen(navController, viewModel = cartViewModel)
+            CartScreen(navController, viewModel = cartViewModel, ordersViewModel = ordersViewModel, profileViewModel = profileViewModel)
         }
         composable(Screen.OrderSuccess.route) {
             OrderSuccessScreen(navController)
@@ -70,7 +76,7 @@ fun AppNavGraph(navController: NavHostController) {
             //RewardsScreen(navController)
         }
         composable(Screen.MyOrder.route) {
-            //OrdersScreen(navController)
+            OrdersScreen(ordersViewModel = ordersViewModel,navController = navController)
         }
         // Sau này bạn thêm các màn hình khác:
         // composable(route = Screen.Details.route) {

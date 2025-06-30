@@ -32,6 +32,8 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import com.example.codecup.viewmodel.OrdersViewModel
+import com.example.codecup.viewmodel.ProfileViewModel
 
 
 
@@ -40,7 +42,9 @@ import androidx.compose.material3.TopAppBarDefaults
 @Composable
 fun CartScreen(
     navController: NavController,
-    viewModel: CartViewModel = viewModel()
+    viewModel: CartViewModel = viewModel(),
+    ordersViewModel: OrdersViewModel = viewModel(),
+    profileViewModel: ProfileViewModel = viewModel(),
 ) {
     val cartItems = viewModel.cartItems
     val totalPrice = viewModel.getTotalPrice()
@@ -108,7 +112,10 @@ fun CartScreen(
 
                 Button(
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF324A59)),
-                    onClick = { navController.navigate("order_success") },
+                    onClick = {
+                        ordersViewModel.saveCartAsOrders(viewModel.cartItems, profileViewModel.address)
+                        viewModel.clearCart()
+                        navController.navigate("order_success") },
                     shape = RoundedCornerShape(25.dp),
                     contentPadding = PaddingValues(horizontal = 26.dp, vertical = 12.dp)
                 ) {
