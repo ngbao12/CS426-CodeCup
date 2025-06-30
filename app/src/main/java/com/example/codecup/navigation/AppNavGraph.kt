@@ -3,29 +3,23 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.codecup.navigation.Screen
-import com.example.codecup.ui.home.HomeScreen
-import com.example.codecup.ui.SplashScreen
+import com.example.codecup.ui.screen.HomeScreen
+import com.example.codecup.ui.screen.SplashScreen
 import com.example.codecup.data.model.CoffeeItem
-import com.example.codecup.ui.details.DetailsScreen
-import android.util.Log
+import com.example.codecup.ui.screen.DetailsScreen
 import com.example.codecup.R
 import androidx.navigation.NavType
 import androidx.navigation.navArgument
-import com.example.codecup.ui.cart.CartScreen
-import androidx.activity.ComponentActivity
+import com.example.codecup.ui.screen.CartScreen
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
 import android.app.Application
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.codecup.viewmodel.CartViewModel
 import com.example.codecup.viewmodel.CartViewModelFactory
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.codecup.ui.OrderSuccess.OrderSuccessScreen
-import com.example.codecup.ui.profile.ProfileScreen
+import com.example.codecup.ui.screen.OrderSuccessScreen
+import com.example.codecup.ui.screen.ProfileScreen
+import com.example.codecup.viewmodel.ProfileViewModel
+import com.example.codecup.viewmodel.ProfileViewModelFactory
 
 
 @Composable
@@ -34,12 +28,15 @@ fun AppNavGraph(navController: NavHostController) {
     val cartViewModel: CartViewModel = viewModel(
         factory = CartViewModelFactory(context)
     )
+    val profileViewModel: ProfileViewModel = viewModel(
+        factory = ProfileViewModelFactory(context)
+    )
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
             SplashScreen(navController)
         }
         composable(route = Screen.Home.route) {
-            HomeScreen(navController)
+            HomeScreen(navController, profileViewModel = profileViewModel)
         }
 
         composable(
@@ -67,7 +64,7 @@ fun AppNavGraph(navController: NavHostController) {
             OrderSuccessScreen(navController)
         }
         composable(Screen.Profile.route) {
-            ProfileScreen(navController = navController)
+            ProfileScreen(navController = navController, viewModel = profileViewModel)
         }
         composable(Screen.Rewards.route) {
             //RewardsScreen(navController)

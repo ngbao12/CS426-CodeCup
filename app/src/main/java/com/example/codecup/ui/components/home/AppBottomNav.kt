@@ -1,6 +1,5 @@
-package com.example.codecup.ui.common
+package com.example.codecup.ui.components.home
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*

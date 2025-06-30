@@ -1,4 +1,4 @@
-package com.example.codecup.ui.details
+package com.example.codecup.ui.screen
 
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -21,11 +21,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.codecup.R
 import com.example.codecup.data.model.CoffeeItem
 import com.example.codecup.data.model.CartItem
-import com.example.codecup.ui.common.DetailsTopBar
-import com.example.codecup.ui.common.OptionSelector
+import com.example.codecup.ui.components.details.DetailsTopBar
+import com.example.codecup.ui.components.details.OptionSelector
 import com.example.codecup.viewmodel.CartViewModel
 import com.example.codecup.viewmodel.DetailsViewModel
 import androidx.compose.foundation.shape.RoundedCornerShape

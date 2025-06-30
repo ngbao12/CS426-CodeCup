@@ -1,4 +1,4 @@
-package com.example.codecup.ui.OrderSuccess
+package com.example.codecup.ui.screen
 
 import androidx.compose.foundation.Image
 import androidx.compose.runtime.Composable
@@ -17,7 +17,6 @@ import com.example.codecup.R
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.background
-import androidx.compose.ui.layout.ContentScale
 
 @Composable
 fun OrderSuccessScreen(navController: NavController) {

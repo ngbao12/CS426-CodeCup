@@ -1,17 +1,14 @@
 package com.example.codecup.viewmodel
 
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.example.codecup.ui.details.getIceIcons
-import com.example.codecup.ui.details.getSelectIcons
-import com.example.codecup.ui.details.getSizeIcons
+import com.example.codecup.ui.components.details.getIceIcons
+import com.example.codecup.ui.components.details.getSelectIcons
+import com.example.codecup.ui.components.details.getSizeIcons
 import androidx.compose.runtime.State
 import android.util.Log
-import com.example.codecup.ui.details.IconData
+import com.example.codecup.ui.components.details.IconData
 
 
 class DetailsViewModel : ViewModel() {

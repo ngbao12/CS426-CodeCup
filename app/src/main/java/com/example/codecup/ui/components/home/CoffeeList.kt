@@ -1,4 +1,4 @@
-package com.example.codecup.ui.home
+package com.example.codecup.ui.components.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -12,14 +12,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import com.example.codecup.data.model.CoffeeItem
-import androidx.compose.ui.unit.Dp
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 
 
 @Composable

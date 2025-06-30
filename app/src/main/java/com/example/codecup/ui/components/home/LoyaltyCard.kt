@@ -1,4 +1,4 @@
-package com.example.codecup.ui.home
+package com.example.codecup.ui.components.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape

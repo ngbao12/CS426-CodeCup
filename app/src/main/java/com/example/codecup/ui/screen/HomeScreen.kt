@@ -1,4 +1,4 @@
-package com.example.codecup.ui.home
+package com.example.codecup.ui.screen
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
@@ -7,27 +7,34 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.codecup.ui.common.AppHeader
-import com.example.codecup.ui.common.AppBottomNav
+import com.example.codecup.ui.components.home.AppHeader
+import com.example.codecup.ui.components.home.AppBottomNav
 import com.example.codecup.viewmodel.HomeViewModel
-import com.example.codecup.data.model.CoffeeItem
-import com.example.codecup.ui.home.CoffeeList
-import com.example.codecup.ui.home.LoyaltyCard
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.Color
 import com.example.codecup.navigation.Screen
+import com.example.codecup.ui.components.home.CoffeeList
+import com.example.codecup.ui.components.home.LoyaltyCard
+import android.content.Context
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import com.example.codecup.data.local.AppDatabase
+import com.example.codecup.viewmodel.ProfileViewModel
 
 
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: HomeViewModel = viewModel()
+    viewModel: HomeViewModel = viewModel(),
+    profileViewModel: ProfileViewModel = viewModel()
 ) {
+
     Scaffold(
         containerColor = Color.White,
-        topBar = { AppHeader(userName = "Anderson", navController = navController) },
+        topBar = { AppHeader(userName = profileViewModel.userName, navController = navController) },
     ) { padding ->
         Column(
             modifier = Modifier
@@ -90,6 +97,7 @@ fun PreviewHomeScreen() {
     val navController = rememberNavController()
     HomeScreen(
         navController = navController
+
     )
 }
 
