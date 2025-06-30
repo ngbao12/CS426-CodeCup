@@ -2,7 +2,6 @@ package com.example.codecup.ui.cart
 
 import androidx.compose.runtime.Composable
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -10,7 +9,6 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -23,6 +21,7 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.rememberDismissState
 import com.example.codecup.R
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.Color
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -30,34 +29,22 @@ fun SwipeToDismissItem(
     item: CartItem,
     onRemove: (CartItem) -> Unit
 ) {
-    val dismissState = rememberDismissState()
+    val dismissState = rememberDismissState(
+        confirmStateChange = {
+            if (it == DismissValue.DismissedToStart) {
+                onRemove(item)
+            }
+            true
+        }
+    )
 
     SwipeToDismiss(
         state = dismissState,
-        background = {
-            val fraction = dismissState.progress.fraction
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Red.copy(alpha = 0.1f))
-                    .padding(end = 20.dp),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                if (fraction > 0.2f) { // chỉ hiện nếu swipe đủ sâu
-                    IconButton(onClick = { onRemove(item) }) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = "Delete",
-                            tint = Color.Red
-                        )
-                    }
-                }
-            }
-        },
         directions = setOf(DismissDirection.EndToStart),
+        background = {},
         dismissContent = {
             Card(
+                colors = CardDefaults.cardColors(containerColor = Color(0xFFF7F8FB)),
                 modifier = Modifier
                     .padding(vertical = 8.dp)
                     .fillMaxWidth(),

@@ -2,6 +2,7 @@ package com.example.codecup.data.model
 
 import androidx.annotation.DrawableRes
 
+
 data class CartItem(
     val id: Int,
     val name: String,
