@@ -11,32 +11,28 @@ import kotlinx.coroutines.launch
 import com.example.codecup.data.local.AppDatabase
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.codecup.data.repository.UserProfileRepository
 
-class ProfileViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val db = Room.databaseBuilder(
-        application,
-        AppDatabase::class.java,
-        "user-database"
-    ).fallbackToDestructiveMigration().build()
-
-    private val userDao = db.userDao()
-
-    val userName: String
-        get() = _profile.value?.name ?: ""
+class ProfileViewModel(
+    application: Application,
+    private val repository: UserProfileRepository
+) : AndroidViewModel(application) {
 
     private val _profile = MutableStateFlow<UserProfile?>(null)
     val profile: StateFlow<UserProfile?> = _profile
 
+    val userName: String
+        get() = _profile.value?.name ?: "Guest"
+
     init {
         viewModelScope.launch {
-            _profile.value = userDao.getProfile()
+            _profile.value = repository.getProfile()
         }
     }
 
     fun saveProfile(profile: UserProfile) {
         viewModelScope.launch {
-            userDao.saveProfile(profile)
+            repository.saveProfile(profile)
             _profile.value = profile
         }
     }
@@ -46,11 +42,17 @@ class ProfileViewModelFactory(
     private val application: Application
 ) : ViewModelProvider.Factory {
 
-    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ProfileViewModel::class.java)) {
-            return ProfileViewModel(application) as T
-        }
-        throw IllegalArgumentException("Unknown ViewModel class")
+        val db = Room.databaseBuilder(
+            application,
+            AppDatabase::class.java,
+            "user-database"
+        ).fallbackToDestructiveMigration().build()
+
+        val dao = db.userDao()
+        val repository = UserProfileRepository(dao)
+
+        return ProfileViewModel(application, repository) as T
     }
 }
+

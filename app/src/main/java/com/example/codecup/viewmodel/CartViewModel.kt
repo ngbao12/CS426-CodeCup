@@ -13,48 +13,42 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.codecup.data.model.isSameAs
+import com.example.codecup.data.repository.CartRepository
 
-class CartViewModel(application: Application) : AndroidViewModel(application) {
-
-    private val db = Room.databaseBuilder(
-        application,
-        AppDatabase::class.java,
-        "cart-database"
-    ).fallbackToDestructiveMigration().build()
-
-    private val cartDao = db.cartDao()
+class CartViewModel(
+    application: Application,
+    private val repository: CartRepository
+) : AndroidViewModel(application) {
 
     private val _cartItems = mutableStateListOf<CartItem>()
     val cartItems: List<CartItem> = _cartItems
 
     init {
-        // Load cart on startup
         viewModelScope.launch(Dispatchers.IO) {
-            _cartItems.addAll(cartDao.getAll())
+            _cartItems.addAll(repository.getAllItems())
         }
     }
 
     fun addToCart(item: CartItem) {
         viewModelScope.launch(Dispatchers.IO) {
-            val allItems = cartDao.getAll()
+            val allItems = repository.getAllItems()
             val existing = allItems.find { it.isSameAs(item) }
 
             if (existing != null) {
                 val updated = existing.copy(quantity = existing.quantity + item.quantity)
-                cartDao.insert(updated)
+                repository.insert(updated)
             } else {
-                cartDao.insert(item)
+                repository.insert(item)
             }
 
-            // Refresh list
             _cartItems.clear()
-            _cartItems.addAll(cartDao.getAll())
+            _cartItems.addAll(repository.getAllItems())
         }
     }
 
     fun removeItem(item: CartItem) {
         viewModelScope.launch(Dispatchers.IO) {
-            cartDao.delete(item)
+            repository.delete(item)
             _cartItems.remove(item)
         }
     }
@@ -67,11 +61,20 @@ class CartViewModel(application: Application) : AndroidViewModel(application) {
 class CartViewModelFactory(
     private val application: Application
 ) : ViewModelProvider.Factory {
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        val db = Room.databaseBuilder(
+            application,
+            AppDatabase::class.java,
+            "cart-database"
+        ).fallbackToDestructiveMigration().build()
+
+        val cartDao = db.cartDao()
+        val repository = CartRepository(cartDao)
+
         if (modelClass.isAssignableFrom(CartViewModel::class.java)) {
-            return CartViewModel(application) as T
+            return CartViewModel(application, repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
-
