@@ -19,6 +19,8 @@ import com.example.codecup.ui.components.order.OrderItemCard
 import com.example.codecup.ui.components.order.CenteredTopBar
 import kotlinx.coroutines.delay
 import androidx.compose.material3.*
+import com.example.codecup.data.model.OrderItem
+import com.example.codecup.data.repository.OrderRepository
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -34,7 +36,7 @@ fun OrdersScreen(
 
     Scaffold(
         containerColor = Color.White,
-        topBar = { CenteredTopBar(title = "My Order", navController = navController) }
+        topBar = { CenteredTopBar(title = "Đơn hàng của tôi", navController = navController) }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -70,21 +72,26 @@ fun OrdersScreen(
                     .padding(16.dp)
             ) {
                 items(ordersToDisplay, key = { it.id }) { order ->
-                    val dismissState = rememberDismissState()
-
-                    if (dismissState.isDismissed(DismissDirection.EndToStart) && selectedTab == 0) {
-                        LaunchedEffect(order.id) {
-                            delay(250) // Cho animation hoàn tất trước khi update state
-                            ordersViewModel.markAsHistory(order)
+                    val dismissState = rememberDismissState(
+                        confirmStateChange = { dismissValue ->
+                            if (dismissValue == DismissValue.DismissedToStart && selectedTab == 0) {
+                                ordersViewModel.markAsHistory(order) // Gọi ngay
+                                true // Cho phép Compose remove item
+                            } else {
+                                false
+                            }
                         }
-                    }
+                    )
 
                     SwipeToDismiss(
                         state = dismissState,
                         background = {},
                         directions = if (selectedTab == 0) setOf(DismissDirection.EndToStart) else emptySet()
                     ) {
-                        OrderItemCard(order)
+                        OrderItemCard(
+                            order = order,
+                            modifier = Modifier.animateItem()
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))

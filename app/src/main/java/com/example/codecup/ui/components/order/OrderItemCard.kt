@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 
 
 @Composable
-fun OrderItemCard(order: OrderItem) {
+fun OrderItemCard(order: OrderItem, modifier: Modifier = Modifier) {
     Card(
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
