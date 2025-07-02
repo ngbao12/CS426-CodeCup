@@ -48,7 +48,7 @@ fun AppNavGraph(navController: NavHostController) {
             SplashScreen(navController)
         }
         composable(route = Screen.Home.route) {
-            HomeScreen(navController, profileViewModel = profileViewModel)
+            HomeScreen(navController, profileViewModel = profileViewModel, rewardsViewModel = rewardsViewModel)
         }
 
         composable(

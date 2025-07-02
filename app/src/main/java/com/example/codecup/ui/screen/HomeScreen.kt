@@ -17,19 +17,16 @@ import androidx.compose.ui.graphics.Color
 import com.example.codecup.navigation.Screen
 import com.example.codecup.ui.components.home.CoffeeList
 import com.example.codecup.ui.components.home.LoyaltyCard
-import android.content.Context
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.codecup.data.local.AppDatabase
 import com.example.codecup.viewmodel.ProfileViewModel
+import com.example.codecup.viewmodel.RewardsViewModel
 
 
 @Composable
 fun HomeScreen(
     navController: NavController,
     viewModel: HomeViewModel = viewModel(),
-    profileViewModel: ProfileViewModel = viewModel()
+    profileViewModel: ProfileViewModel = viewModel(),
+    rewardsViewModel: RewardsViewModel = viewModel()
 ) {
 
     Scaffold(
@@ -49,7 +46,7 @@ fun HomeScreen(
                 shadowElevation = 8.dp,
                 color = Color(0xFF324A59)
             ) {
-                LoyaltyCard(stamps = viewModel.stamps)
+                LoyaltyCard(stamps = rewardsViewModel.stampCount)
             }
             Spacer(modifier = Modifier.height(20.dp))
             Surface(
