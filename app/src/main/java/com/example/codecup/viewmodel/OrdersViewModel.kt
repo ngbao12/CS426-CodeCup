@@ -15,6 +15,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.codecup.data.local.AppDatabase
+import com.example.codecup.data.local.DatabaseProvider
 
 
 class OrdersViewModel(
@@ -67,12 +68,7 @@ class OrdersViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val db = Room.databaseBuilder(
-            application,
-            AppDatabase::class.java,
-            "orders-database"
-        ).fallbackToDestructiveMigration().build()
-
+        val db = DatabaseProvider.getDatabase(application)
         val orderDao = db.orderDao()
         val repository = OrderRepository(orderDao)
 

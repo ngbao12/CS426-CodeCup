@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.codecup.data.model.isSameAs
 import com.example.codecup.data.repository.CartRepository
+import com.example.codecup.data.local.DatabaseProvider
 
 class CartViewModel(
     application: Application,
@@ -71,12 +72,7 @@ class CartViewModelFactory(
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        val db = Room.databaseBuilder(
-            application,
-            AppDatabase::class.java,
-            "cart-database"
-        ).fallbackToDestructiveMigration().build()
-
+        val db = DatabaseProvider.getDatabase(application)
         val cartDao = db.cartDao()
         val repository = CartRepository(cartDao)
 

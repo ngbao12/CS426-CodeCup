@@ -34,8 +34,9 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import com.example.codecup.viewmodel.OrdersViewModel
 import com.example.codecup.viewmodel.ProfileViewModel
-
-
+import com.example.codecup.viewmodel.RewardsViewModel
+import com.example.codecup.data.model.RewardItem
+import java.util.UUID
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,6 +46,7 @@ fun CartScreen(
     viewModel: CartViewModel = viewModel(),
     ordersViewModel: OrdersViewModel = viewModel(),
     profileViewModel: ProfileViewModel = viewModel(),
+    rewardsViewModel: RewardsViewModel = viewModel()
 ) {
     val cartItems = viewModel.cartItems
     val totalPrice = viewModel.getTotalPrice()
@@ -114,6 +116,7 @@ fun CartScreen(
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF324A59)),
                     onClick = {
                         ordersViewModel.saveCartAsOrders(viewModel.cartItems, profileViewModel.address)
+                        rewardsViewModel.addRewardsFromCartItems(viewModel.cartItems)
                         viewModel.clearCart()
                         navController.navigate("order_success") },
                     shape = RoundedCornerShape(25.dp),

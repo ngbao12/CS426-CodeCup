@@ -36,7 +36,7 @@ fun OrdersScreen(
 
     Scaffold(
         containerColor = Color.White,
-        topBar = { CenteredTopBar(title = "Đơn hàng của tôi", navController = navController) }
+        topBar = { CenteredTopBar(title = "My Order", navController = navController) }
     ) { padding ->
         Column(
             modifier = Modifier

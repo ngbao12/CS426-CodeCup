@@ -23,6 +23,9 @@ import com.example.codecup.viewmodel.ProfileViewModelFactory
 import com.example.codecup.viewmodel.OrdersViewModel
 import com.example.codecup.viewmodel.OrdersViewModelFactory
 import com.example.codecup.ui.screen.OrdersScreen
+import com.example.codecup.ui.screen.RewardsScreen
+import com.example.codecup.viewmodel.RewardsViewModel
+import com.example.codecup.viewmodel.RewardsViewModelFactory
 
 
 @Composable
@@ -36,6 +39,9 @@ fun AppNavGraph(navController: NavHostController) {
     )
     val ordersViewModel: OrdersViewModel = viewModel(
         factory = OrdersViewModelFactory(context)
+    )
+    val rewardsViewModel: RewardsViewModel = viewModel(
+        factory = RewardsViewModelFactory(context)
     )
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
@@ -64,7 +70,7 @@ fun AppNavGraph(navController: NavHostController) {
             DetailsScreen(navController, coffeeItem,cartViewModel= cartViewModel)
         }
         composable(Screen.Cart.route) {
-            CartScreen(navController, viewModel = cartViewModel, ordersViewModel = ordersViewModel, profileViewModel = profileViewModel)
+            CartScreen(navController, viewModel = cartViewModel, ordersViewModel = ordersViewModel, profileViewModel = profileViewModel, rewardsViewModel = rewardsViewModel)
         }
         composable(Screen.OrderSuccess.route) {
             OrderSuccessScreen(navController)
@@ -73,7 +79,7 @@ fun AppNavGraph(navController: NavHostController) {
             ProfileScreen(navController = navController, viewModel = profileViewModel)
         }
         composable(Screen.Rewards.route) {
-            //RewardsScreen(navController)
+            RewardsScreen(rewardsViewModel,navController)
         }
         composable(Screen.MyOrder.route) {
             OrdersScreen(ordersViewModel = ordersViewModel,navController = navController)
