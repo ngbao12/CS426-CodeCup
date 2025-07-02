@@ -31,6 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import com.example.codecup.ui.components.order.CenteredTopBar
 import androidx.compose.foundation.clickable
 import com.example.codecup.ui.components.home.AppBottomNav
+import androidx.compose.foundation.background
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 
 @Composable
 fun RewardsScreen(
@@ -72,7 +75,7 @@ fun RewardsScreen(
                         .padding(16.dp)
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth().background(Color(0xFF324A59)),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -143,7 +146,7 @@ fun RewardsScreen(
                         },
                         shape = RoundedCornerShape(50),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF9C6ADE),
+                            containerColor = Color(0xFF6887A4),
                             contentColor = Color.White
                         )
                     ) {
@@ -174,7 +177,8 @@ fun RewardsScreen(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(reward.name)
-                                Text("+${reward.points} Pts", fontWeight = FontWeight.Medium)
+                                val text = if (reward.points >= 0) "+${reward.points}" else "${reward.points}"
+                                Text(text, fontWeight = FontWeight.Medium)
                             }
                             Text(
                                 text = SimpleDateFormat("dd MMM | HH:mm", Locale.getDefault())

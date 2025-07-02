@@ -29,6 +29,15 @@ import com.example.codecup.viewmodel.CartViewModel
 import com.example.codecup.viewmodel.DetailsViewModel
 import androidx.compose.foundation.shape.RoundedCornerShape
 import com.example.codecup.navigation.Screen
+import com.example.codecup.ui.components.details.CartPreview
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
+import com.example.codecup.viewmodel.OrdersViewModel
+import com.example.codecup.viewmodel.ProfileViewModel
+import com.example.codecup.viewmodel.RewardsViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -36,10 +45,8 @@ fun DetailsScreen(
     navController: NavController,
     coffeeItem: CoffeeItem,
     viewModel: DetailsViewModel = viewModel(),
-    cartViewModel: CartViewModel = viewModel()
+    cartViewModel: CartViewModel = viewModel(),
 ) {
-    Log.d("DetailsScreen", "DetailsScreen recomposed with coffeeItem: $coffeeItem")
-
     val quantity by viewModel.quantity
     val shotIndex by viewModel.shotIndex
     val selectIndex by viewModel.selectIndex
@@ -53,13 +60,44 @@ fun DetailsScreen(
     val sizeOptions = listOf("Small", "Medium", "Large")
     val iceOptions = listOf("Less Ice", "Normal", "More Ice")
 
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showBottomSheet = false },
+            sheetState = sheetState,
+            containerColor = Color.White
+        ) {
+            CartPreview(cartViewModel = cartViewModel)
+
+            Spacer(Modifier.height(8.dp))
+
+            Button(
+                onClick = {
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) showBottomSheet = false
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF324A59))
+            ) {
+                Text("Close")
+            }
+        }
+    }
+
     Scaffold(
         containerColor = Color.White,
         topBar = {
             DetailsTopBar(
                 navController = navController,
                 onCartClick = {
-                    navController.navigate(Screen.Cart.route)
+                    showBottomSheet = true
+                    scope.launch { sheetState.show() }
                 }
             )
         }
@@ -143,7 +181,7 @@ fun DetailsScreen(
                         ice = iceOptions[iceIndex]
                     )
                     cartViewModel.addToCart(cartItem)
-                    navController.navigate(Screen.Cart.route)
+                    navController.navigate("cart")
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -155,4 +193,3 @@ fun DetailsScreen(
         }
     }
 }
-

@@ -88,6 +88,23 @@ class RewardsViewModel(
     private fun calculatePoints(total: Double): Int {
         return (total * 10).toInt()
     }
+
+    fun addNegativeReward(rewardItem: RewardItem, onComplete: () -> Unit) {
+        totalPoints += rewardItem.points
+
+        viewModelScope.launch(Dispatchers.IO) {
+            rewardRepository.addReward(rewardItem)
+            statusRepository.updateStatus(stampCount, totalPoints)
+
+            val updated = rewardRepository.getAllRewards()
+            withContext(Dispatchers.Main) {
+                _rewardItems.clear()
+                _rewardItems.addAll(updated)
+                onComplete()
+            }
+        }
+    }
+
 }
 
 

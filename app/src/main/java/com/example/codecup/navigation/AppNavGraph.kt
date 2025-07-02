@@ -26,6 +26,7 @@ import com.example.codecup.ui.screen.OrdersScreen
 import com.example.codecup.ui.screen.RewardsScreen
 import com.example.codecup.viewmodel.RewardsViewModel
 import com.example.codecup.viewmodel.RewardsViewModelFactory
+import com.example.codecup.ui.screen.RedeemScreen
 
 
 @Composable
@@ -84,9 +85,9 @@ fun AppNavGraph(navController: NavHostController) {
         composable(Screen.MyOrder.route) {
             OrdersScreen(ordersViewModel = ordersViewModel,navController = navController)
         }
-        // Sau này bạn thêm các màn hình khác:
-        // composable(route = Screen.Details.route) {
-        //     DetailsScreen(navController)
+        composable(Screen.Redeem.route) {
+            RedeemScreen(rewardsViewModel,ordersViewModel,profileViewModel,navController)
+        }
 
     }
 }

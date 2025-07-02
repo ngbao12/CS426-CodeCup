@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import com.example.codecup.data.local.AppDatabase
 import com.example.codecup.data.local.DatabaseProvider
+import com.example.codecup.data.model.RewardItem
 
 
 class OrdersViewModel(
@@ -61,6 +62,19 @@ class OrdersViewModel(
             repository.insertOrder(orderList)
         }
     }
+
+    fun saveRewardAsOrders(rewardItem: RewardItem, address: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val order = OrderItem(
+                name = rewardItem.name,
+                price = 0.0,
+                address = address,
+                status = "ongoing"
+            )
+            repository.insertOrder(listOf(order))
+        }
+    }
+
 }
 
 class OrdersViewModelFactory(
