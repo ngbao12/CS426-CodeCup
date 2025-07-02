@@ -53,7 +53,7 @@ class OrdersViewModel(
             val orderList = cartItems.map {
                 OrderItem(
                     name = it.name,
-                    price = it.price * it.quantity,
+                    price = it.price,
                     address = address,
                     status = "ongoing"
                 )

@@ -29,6 +29,8 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import com.example.codecup.ui.components.order.CenteredTopBar
+import androidx.compose.foundation.clickable
+import com.example.codecup.ui.components.home.AppBottomNav
 
 @Composable
 fun RewardsScreen(
@@ -43,39 +45,80 @@ fun RewardsScreen(
         topBar = {
             CenteredTopBar(title = "Rewards", navController = navController)
         },
+        bottomBar = {
+            Box(modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp)) {
+                AppBottomNav(navController)
+            }
+        },
         containerColor = Color.White
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp)
+                .padding(horizontal = 30.dp)
         ) {
-            // Loyalty Card
-            Text("Loyalty card", fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Spacer(modifier = Modifier.height(12.dp))
+
+            // Loyalty Card section
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF2E3A59))
             ) {
-                repeat(8) { index ->
-                    val filled = index < stampCount
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_coffee_stamp),
-                        contentDescription = null,
-                        tint = if (filled) Color(0xFF6D4C41) else Color.LightGray,
-                        modifier = Modifier.size(32.dp)
-                    )
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp)
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text("Loyalty card", color = Color.White, fontWeight = FontWeight.Medium)
+                        Text("${stampCount.coerceAtMost(8)}/8", color = Color.White, fontSize = 14.sp)
+                    }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Card(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable(enabled = stampCount == 8) {
+                                rewardsViewModel.resetStamps()
+                            },
+                        shape = RoundedCornerShape(12.dp),
+                        colors = CardDefaults.cardColors(containerColor = Color.White)
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 12.dp),
+                            horizontalArrangement = Arrangement.SpaceEvenly,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            repeat(8) { index ->
+                                val filled = index < stampCount
+                                Icon(
+                                    painter = painterResource(id = R.drawable.ic_coffee_stamp),
+                                    contentDescription = null,
+                                    tint = if (filled) Color(0xFF6D4C41) else Color.LightGray,
+                                    modifier = Modifier.size(32.dp)
+                                )
+                            }
+                        }
+                    }
                 }
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // My Points
+            // My Points + Redeem Button
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                shape = RoundedCornerShape(12.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF2E3A59))
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(containerColor = Color(0xFF324A59))
             ) {
                 Row(
                     modifier = Modifier
@@ -85,7 +128,7 @@ fun RewardsScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column {
-                        Text("My Points", color = Color.White)
+                        Text("My Points:", color = Color.White, fontSize = 16.sp)
                         Text(
                             text = totalPoints.toString(),
                             color = Color.White,
@@ -93,37 +136,53 @@ fun RewardsScreen(
                             fontWeight = FontWeight.Bold
                         )
                     }
+
                     Button(
-                        onClick = { rewardsViewModel.resetStamps() },
-                        shape = RoundedCornerShape(50)
+                        onClick = {
+                            navController.navigate("redeem")
+                        },
+                        shape = RoundedCornerShape(50),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF9C6ADE),
+                            contentColor = Color.White
+                        )
                     ) {
                         Text("Redeem drinks")
                     }
                 }
             }
-
-            Spacer(modifier = Modifier.height(24.dp))
-            Text("History Rewards", fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.height(8.dp))
-
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp)
             ) {
-                items(rewardItems) { reward ->
-                    Column {
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
-                        ) {
-                            Text(reward.name)
-                            Text("+${reward.points} Pts")
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Text("History Rewards", fontWeight = FontWeight.Bold)
+                Spacer(modifier = Modifier.height(12.dp))
+
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(rewardItems) { reward ->
+                        Column {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween
+                            ) {
+                                Text(reward.name)
+                                Text("+${reward.points} Pts", fontWeight = FontWeight.Medium)
+                            }
+                            Text(
+                                text = SimpleDateFormat("dd MMM | HH:mm", Locale.getDefault())
+                                    .format(Date(reward.timestamp)),
+                                fontSize = 12.sp,
+                                color = Color.Gray
+                            )
                         }
-                        Text(
-                            text = SimpleDateFormat("dd MMM | HH:mm", Locale.getDefault())
-                                .format(Date(reward.timestamp)),
-                            fontSize = 12.sp,
-                            color = Color.Gray
-                        )
                     }
                 }
             }

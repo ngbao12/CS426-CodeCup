@@ -36,7 +36,7 @@ class CartViewModel(
             val existing = allItems.find { it.isSameAs(item) }
 
             if (existing != null) {
-                val updated = existing.copy(quantity = existing.quantity + item.quantity)
+                val updated = existing.copy(quantity = existing.quantity + item.quantity, price = existing.price + item.price)
                 repository.insert(updated)
             } else {
                 repository.insert(item)
@@ -55,7 +55,7 @@ class CartViewModel(
     }
 
     fun getTotalPrice(): Double {
-        return _cartItems.sumOf { it.price * it.quantity }
+        return _cartItems.sumOf { it.price }
     }
 
     fun clearCart() {

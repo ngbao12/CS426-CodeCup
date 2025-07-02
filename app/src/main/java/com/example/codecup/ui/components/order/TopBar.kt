@@ -33,14 +33,6 @@ fun CenteredTopBar(
                 )
             }
         },
-        navigationIcon = {
-            IconButton(onClick = { navController.navigate("home") }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "Back"
-                )
-            }
-        },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
             containerColor = Color.White
         )

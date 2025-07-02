@@ -21,6 +21,7 @@ import kotlinx.coroutines.delay
 import androidx.compose.material3.*
 import com.example.codecup.data.model.OrderItem
 import com.example.codecup.data.repository.OrderRepository
+import com.example.codecup.ui.components.home.AppBottomNav
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -36,6 +37,11 @@ fun OrdersScreen(
 
     Scaffold(
         containerColor = Color.White,
+        bottomBar = {
+            Box(modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp)) {
+                AppBottomNav(navController)
+            }
+        },
         topBar = { CenteredTopBar(title = "My Order", navController = navController) }
     ) { padding ->
         Column(

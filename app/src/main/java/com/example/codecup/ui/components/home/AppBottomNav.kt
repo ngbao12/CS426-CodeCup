@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 
 @Composable
-fun AppBottomNav(navController: NavController) {
+fun AppBottomNav(navController: NavController, modifier: Modifier = Modifier) {
     val items = listOf(
         Screen.Home,
         Screen.Rewards,
