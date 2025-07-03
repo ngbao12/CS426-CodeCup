@@ -9,6 +9,7 @@ data class RewardItem(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val name: String,
     val points: Int,
-    val timestamp: Long = System.currentTimeMillis()
+    val timestamp: Long = System.currentTimeMillis(),
+    val userEmail: String
 )
 

@@ -7,11 +7,15 @@ import com.example.codecup.data.local.OrderDao
 
 class OrderRepository(private val orderDao: OrderDao) {
 
-    fun getOngoingOrders(): Flow<List<OrderItem>> = orderDao.getOrdersByStatus("ongoing")
+    fun getOngoingOrders(userEmail: String): Flow<List<OrderItem>> =
+        orderDao.getOrdersByStatus("ongoing", userEmail)
 
-    fun getHistoryOrders(): Flow<List<OrderItem>> = orderDao.getOrdersByStatus("history")
+    fun getHistoryOrders(userEmail: String): Flow<List<OrderItem>> =
+        orderDao.getOrdersByStatus("history", userEmail)
 
-    suspend fun insertOrder(order: List<OrderItem>) = orderDao.insertAll(order)
+    suspend fun insertOrder(order: List<OrderItem>) =
+        orderDao.insertAll(order)
 
-    suspend fun updateOrder(order: OrderItem) = orderDao.update(order)
+    suspend fun updateOrder(order: OrderItem) =
+        orderDao.update(order)
 }

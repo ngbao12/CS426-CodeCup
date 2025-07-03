@@ -36,8 +36,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.rememberCoroutineScope
 import com.example.codecup.viewmodel.OrdersViewModel
 import com.example.codecup.viewmodel.ProfileViewModel
-import com.example.codecup.viewmodel.RewardsViewModel
+import com.example.codecup.viewmodel.AccountViewModel
 import kotlinx.coroutines.launch
+import androidx.compose.runtime.collectAsState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,7 +47,9 @@ fun DetailsScreen(
     coffeeItem: CoffeeItem,
     viewModel: DetailsViewModel = viewModel(),
     cartViewModel: CartViewModel = viewModel(),
+    accountViewModel: AccountViewModel = viewModel(),
 ) {
+    val currentAccountState = accountViewModel.currentAccount.collectAsState()
     val quantity by viewModel.quantity
     val shotIndex by viewModel.shotIndex
     val selectIndex by viewModel.selectIndex
@@ -178,7 +181,8 @@ fun DetailsScreen(
                         shot = shotOptions[shotIndex],
                         select = selectOptions[selectIndex],
                         size = sizeOptions[sizeIndex],
-                        ice = iceOptions[iceIndex]
+                        ice = iceOptions[iceIndex],
+                        userEmail = currentAccountState?.value?.email.orEmpty()
                     )
                     cartViewModel.addToCart(cartItem)
                     navController.navigate("cart")

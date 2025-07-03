@@ -21,7 +21,8 @@ import com.example.codecup.data.model.RewardItem
 
 class OrdersViewModel(
     application: Application,
-    private val repository: OrderRepository
+    private val repository: OrderRepository,
+    private val userEmail: String
 ) : AndroidViewModel(application) {
 
     private val _ongoingOrders = MutableStateFlow<List<OrderItem>>(emptyList())
@@ -32,12 +33,12 @@ class OrdersViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getOngoingOrders().collect {
+            repository.getOngoingOrders(userEmail).collect {
                 _ongoingOrders.value = it
             }
         }
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getHistoryOrders().collect {
+            repository.getHistoryOrders(userEmail).collect {
                 _historyOrders.value = it
             }
         }
@@ -56,7 +57,8 @@ class OrdersViewModel(
                     name = it.name,
                     price = it.price,
                     address = address,
-                    status = "ongoing"
+                    status = "ongoing",
+                    userEmail = it.userEmail
                 )
             }
             repository.insertOrder(orderList)
@@ -69,25 +71,25 @@ class OrdersViewModel(
                 name = rewardItem.name,
                 price = 0.0,
                 address = address,
-                status = "ongoing"
+                status = "ongoing",
+                userEmail = rewardItem.userEmail
             )
             repository.insertOrder(listOf(order))
         }
     }
-
 }
 
 class OrdersViewModelFactory(
-    private val application: Application
+    private val application: Application,
+    private val userEmail: String
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val db = DatabaseProvider.getDatabase(application)
-        val orderDao = db.orderDao()
-        val repository = OrderRepository(orderDao)
+        val repository = OrderRepository(db.orderDao())
 
         if (modelClass.isAssignableFrom(OrdersViewModel::class.java)) {
-            return OrdersViewModel(application, repository) as T
+            return OrdersViewModel(application, repository, userEmail) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

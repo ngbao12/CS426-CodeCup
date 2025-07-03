@@ -16,12 +16,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavHostController
+import com.example.codecup.viewmodel.AccountViewModel
+import androidx.compose.runtime.collectAsState
+
 
 @Composable
-fun SplashScreen(navController: NavController) {
-    LaunchedEffect(Unit) {
-        delay(2000) // đợi 2s rồi điều hướng
-        navController.navigate("login") {
+fun SplashScreen(navController: NavController, accountViewModel: AccountViewModel) {
+    val currentAccountState = accountViewModel.currentAccount.collectAsState()
+
+    LaunchedEffect(currentAccountState.value) {
+        delay(1000)
+        val destination = if (currentAccountState.value?.email.isNullOrEmpty()) {
+            Screen.Login.route
+        } else {
+            Screen.Home.route
+        }
+        navController.navigate(destination) {
             popUpTo(Screen.Splash.route) { inclusive = true }
         }
     }

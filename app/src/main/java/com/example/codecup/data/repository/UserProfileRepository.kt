@@ -5,8 +5,11 @@ import com.example.codecup.data.local.UserDao
 
 class UserProfileRepository(private val dao: UserDao) {
 
-    suspend fun getProfile(): UserProfile? = dao.getProfile()
+    suspend fun getProfile(email: String): UserProfile? =
+        dao.getProfile(email)
 
-    suspend fun saveProfile(profile: UserProfile) = dao.saveProfile(profile)
+    suspend fun saveProfile(profile: UserProfile) =
+        dao.saveProfile(profile)
 }
+
 

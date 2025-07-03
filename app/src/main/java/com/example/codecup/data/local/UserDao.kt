@@ -5,8 +5,9 @@ import com.example.codecup.data.model.UserProfile
 
 @Dao
 interface UserDao {
-    @Query("SELECT * FROM user_profile WHERE id = 0")
-    suspend fun getProfile(): UserProfile?
+
+    @Query("SELECT * FROM user_profile WHERE email = :email")
+    suspend fun getProfile(email: String): UserProfile?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun saveProfile(profile: UserProfile)

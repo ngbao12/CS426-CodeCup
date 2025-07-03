@@ -7,19 +7,22 @@ import com.example.codecup.data.local.RewardDao
 
 class RewardRepository(private val rewardDao: RewardDao) {
 
-    val rewardsFlow: Flow<List<RewardItem>> = rewardDao.getAllRewardsFlow()
-    val totalPointsFlow: Flow<Int> = rewardDao.getTotalPoints()
+    fun rewardsFlow(userEmail: String): Flow<List<RewardItem>> =
+        rewardDao.getAllRewardsFlow(userEmail)
+
+    fun totalPointsFlow(userEmail: String): Flow<Int> =
+        rewardDao.getTotalPoints(userEmail)
 
     suspend fun addReward(reward: RewardItem) {
         rewardDao.insertReward(reward)
     }
 
-    suspend fun getAllRewards(): List<RewardItem> {
-        return rewardDao.getAllRewards()
+    suspend fun getAllRewards(userEmail: String): List<RewardItem> {
+        return rewardDao.getAllRewards(userEmail)
     }
 
-    suspend fun getTotalPoints(): Int {
-        return rewardDao.getTotalPointsOnce() ?: 0
+    suspend fun getTotalPoints(userEmail: String): Int {
+        return rewardDao.getTotalPointsOnce(userEmail) ?: 0
     }
 }
 

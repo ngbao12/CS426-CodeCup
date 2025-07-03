@@ -74,17 +74,17 @@ fun formatTimestamp(timestamp: Long): String {
     return sdf.format(Date(timestamp))
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewOrderItemCard() {
-    val sampleOrder = OrderItem(
-        id = 1,
-        name = "Cappuccino",
-        price = 3.50,
-        address = "123 Coffee Street, District 1",
-        timestamp = System.currentTimeMillis(),
-        status = "ongoing"
-    )
-
-    OrderItemCard(order = sampleOrder)
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewOrderItemCard() {
+//    val sampleOrder = OrderItem(
+//        id = 1,
+//        name = "Cappuccino",
+//        price = 3.50,
+//        address = "123 Coffee Street, District 1",
+//        timestamp = System.currentTimeMillis(),
+//        status = "ongoing"
+//    )
+//
+//    OrderItemCard(order = sampleOrder)
+//}

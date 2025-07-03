@@ -32,6 +32,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.material3.AlertDialog
+import androidx.compose.foundation.shape.RoundedCornerShape
 
 @Composable
 fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = viewModel()) {
@@ -39,16 +41,16 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = vi
 
     var name: String by remember { mutableStateOf("") }
     var phone: String by remember { mutableStateOf("") }
-    var email: String by remember { mutableStateOf("") }
+    val email: String = viewModel.profile.value?.email ?: "" // Fixed: don't allow editing
     var address: String by remember { mutableStateOf("") }
 
     var editingField by remember { mutableStateOf<String?>(null) }
+    var showLogoutDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(profile) {
         profile?.let {
             name = it.name
             phone = it.phone
-            email = it.email
             address = it.address
         }
     }
@@ -112,13 +114,10 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = vi
             icon = R.drawable.ic_email,
             label = "Email",
             value = email,
-            isEditing = editingField == "email",
-            onValueChange = { email = it },
-            onEditClick = { editingField = "email" },
-            onDoneEditing = {
-                editingField = null
-                viewModel.saveProfile(UserProfile(name = name, phone = phone, email = email, address = address))
-            }
+            isEditing = false, // Disable editing email
+            onValueChange = {},
+            onEditClick = {},
+            onDoneEditing = {}
         )
 
         EditableProfileField(
@@ -133,5 +132,44 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = vi
                 viewModel.saveProfile(UserProfile(name = name, phone = phone, email = email, address = address))
             }
         )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Button(
+            onClick = { showLogoutDialog = true },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 24.dp)
+                .height(48.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF324A59)),
+            shape = RoundedCornerShape(24.dp)
+        ) {
+            Text("Log Out", color = Color.White)
+        }
+
+        if (showLogoutDialog) {
+            AlertDialog(
+                onDismissRequest = { showLogoutDialog = false },
+                title = { Text("Log out") },
+                text = { Text("Are you sure to log out?") },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            showLogoutDialog = false
+                            navController.navigate("login") {
+                                popUpTo(0) { inclusive = true }
+                            }
+                        }
+                    ) {
+                        Text("Yes")
+                    }
+                },
+                dismissButton = {
+                    TextButton(onClick = { showLogoutDialog = false }) {
+                        Text("Cancel")
+                    }
+                }
+            )
+        }
     }
 }

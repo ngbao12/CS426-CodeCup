@@ -39,8 +39,11 @@ import com.example.codecup.ui.components.redeem.RedeemItemCard
 import com.example.codecup.ui.components.order.CenteredTopBar
 import com.example.codecup.data.model.OrderItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.unit.dp
-import androidx.compose.foundation.background
+import com.example.codecup.viewmodel.AccountViewModel
+import kotlinx.coroutines.flow.StateFlow
+import com.example.codecup.data.model.Account
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -48,6 +51,7 @@ fun RedeemScreen(
     rewardsViewModel: RewardsViewModel,
     ordersViewModel: OrdersViewModel,
     profileViewModel: ProfileViewModel,
+    accountViewModel: AccountViewModel,
     navController: NavController
 ) {
     val context = LocalContext.current
@@ -56,7 +60,8 @@ fun RedeemScreen(
         RedeemItem("Flat White", R.drawable.flat_white, "04.07.26", 300),
         RedeemItem("Cappuccino", R.drawable.cappuccino, "04.07.26", 400)
     )
-
+    val currentAccountState = accountViewModel.currentAccount.collectAsState()
+    val currentAccount = currentAccountState.value
     Scaffold(
         containerColor = Color.White,
         topBar = {
@@ -100,6 +105,7 @@ fun RedeemScreen(
                                 rewardsViewModel = rewardsViewModel,
                                 ordersViewModel = ordersViewModel,
                                 profileViewModel = profileViewModel,
+                                currentAccount = currentAccount,
                                 onSuccess = {
                                     Toast.makeText(
                                         context,
@@ -120,19 +126,22 @@ fun RedeemScreen(
     }
 }
 
+
 fun handleRedeem(
     rewardItemName: String,
     pointCost: Int,
     rewardsViewModel: RewardsViewModel,
     ordersViewModel: OrdersViewModel,
     profileViewModel: ProfileViewModel,
+    currentAccount: Account?,
     onSuccess: () -> Unit,
     onFailure: () -> Unit
 ) {
     if (rewardsViewModel.totalPoints >= pointCost) {
         val reward = RewardItem(
             name = rewardItemName,
-            points = -pointCost
+            points = -pointCost,
+            userEmail = currentAccount?.email.orEmpty()
         )
 
         rewardsViewModel.addNegativeReward(rewardItem = reward) {

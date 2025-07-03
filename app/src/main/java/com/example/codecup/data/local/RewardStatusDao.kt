@@ -9,6 +9,6 @@ interface RewardStatusDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOrUpdate(status: RewardStatus)
 
-    @Query("SELECT * FROM reward_status WHERE id = 1")
-    suspend fun getStatus(): RewardStatus?
+    @Query("SELECT * FROM reward_status WHERE userEmail = :email")
+    suspend fun getStatus(email: String): RewardStatus?
 }

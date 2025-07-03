@@ -5,7 +5,7 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "reward_status")
 data class RewardStatus(
-    @PrimaryKey val id: Int = 1,
+    @PrimaryKey val userEmail: String,
     val stamps: Int = 0,
     val points: Int = 0
 )

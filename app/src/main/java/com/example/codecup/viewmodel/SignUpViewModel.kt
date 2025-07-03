@@ -29,19 +29,30 @@ class SignUpViewModel(private val repository: AccountRepository) : ViewModel() {
     ) {
         viewModelScope.launch {
             isLoading = true
+
+            // Kiểm tra xem email đã tồn tại chưa
+            val existingAccount = repository.getAccountByEmail(email)
+            if (existingAccount != null) {
+                isLoading = false
+                onAccountExists()
+                return@launch
+            }
+
+            // Nếu chưa có, thì insert tài khoản mới
             val result = repository.insertAccount(
                 Account(email = email, password = password, fullName = fullName)
             )
             isLoading = false
 
-            if (result == -1L) {
-                onAccountExists()
-            } else {
+            if (result != -1L) {
                 onSuccess()
+            } else {
+                onAccountExists() // fallback nếu insert thất bại
             }
         }
     }
 }
+
 
 class SignUpViewModelFactory(private val application: Application) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {

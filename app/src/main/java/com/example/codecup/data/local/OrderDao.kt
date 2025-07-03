@@ -6,11 +6,12 @@ import com.example.codecup.data.model.OrderItem
 
 @Dao
 interface OrderDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(orders: List<OrderItem>)
 
-    @Query("SELECT * FROM orders WHERE status = :status ORDER BY timestamp DESC")
-    fun getOrdersByStatus(status: String): Flow<List<OrderItem>>
+    @Query("SELECT * FROM orders WHERE status = :status AND userEmail = :email ORDER BY timestamp DESC")
+    fun getOrdersByStatus(status: String, email: String): Flow<List<OrderItem>>
 
     @Update
     suspend fun update(order: OrderItem)

@@ -9,5 +9,6 @@ data class OrderItem(
     val price: Double,
     val address: String,
     val timestamp: Long = System.currentTimeMillis(),
-    val status: String = "ongoing" // or "history"
+    val status: String = "ongoing", // or "history"
+    val userEmail: String
 )

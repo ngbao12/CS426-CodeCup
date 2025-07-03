@@ -25,11 +25,14 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.codecup.viewmodel.LoginViewModel
 import android.widget.Toast
+import com.example.codecup.viewmodel.AccountViewModel
+import com.example.codecup.navigation.Screen
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginViewModel
+    viewModel: LoginViewModel,
+    accountViewModel: AccountViewModel
 ) {
     val context = LocalContext.current
     val email = viewModel.email
@@ -75,8 +78,9 @@ fun LoginScreen(
             onClick = {
                 viewModel.login(
                     onSuccess = {
-                        navController.navigate("home") {
-                            popUpTo("login") { inclusive = true }
+                        accountViewModel.loadAccount(email)
+                        navController.navigate(Screen.Splash.route) {
+                            popUpTo(Screen.Login.route) { inclusive = true }
                         }
                     },
                     onError = {

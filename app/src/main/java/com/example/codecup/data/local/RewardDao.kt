@@ -10,15 +10,15 @@ interface RewardDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertReward(reward: RewardItem)
 
-    @Query("SELECT * FROM rewards ORDER BY timestamp DESC")
-    fun getAllRewardsFlow(): Flow<List<RewardItem>>
+    @Query("SELECT * FROM rewards WHERE userEmail = :email ORDER BY timestamp DESC")
+    fun getAllRewardsFlow(email: String): Flow<List<RewardItem>>
 
-    @Query("SELECT * FROM rewards ORDER BY timestamp DESC")
-    suspend fun getAllRewards(): List<RewardItem>
+    @Query("SELECT * FROM rewards WHERE userEmail = :email ORDER BY timestamp DESC")
+    suspend fun getAllRewards(email: String): List<RewardItem>
 
-    @Query("SELECT SUM(points) FROM rewards")
-    fun getTotalPoints(): Flow<Int>
+    @Query("SELECT SUM(points) FROM rewards WHERE userEmail = :email")
+    fun getTotalPoints(email: String): Flow<Int>
 
-    @Query("SELECT SUM(points) FROM rewards")
-    suspend fun getTotalPointsOnce(): Int?
+    @Query("SELECT SUM(points) FROM rewards WHERE userEmail = :email")
+    suspend fun getTotalPointsOnce(email: String): Int?
 }

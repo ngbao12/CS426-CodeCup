@@ -33,20 +33,24 @@ import com.example.codecup.viewmodel.LoginViewModel
 import com.example.codecup.ui.screen.SignUpScreen
 import com.example.codecup.viewmodel.SignUpViewModelFactory
 import com.example.codecup.viewmodel.SignUpViewModel
+import com.example.codecup.viewmodel.AccountViewModelFactory
+import com.example.codecup.viewmodel.AccountViewModel
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.navigation.compose.rememberNavController
+import com.example.codecup.ui.screen.*
+import androidx.compose.runtime.remember
+
+
+
 @Composable
 fun AppNavGraph(navController: NavHostController) {
     val context = LocalContext.current.applicationContext as Application
-    val cartViewModel: CartViewModel = viewModel(
-        factory = CartViewModelFactory(context)
-    )
-    val profileViewModel: ProfileViewModel = viewModel(
-        factory = ProfileViewModelFactory(context)
-    )
-    val ordersViewModel: OrdersViewModel = viewModel(
-        factory = OrdersViewModelFactory(context)
-    )
-    val rewardsViewModel: RewardsViewModel = viewModel(
-        factory = RewardsViewModelFactory(context)
+
+    // ViewModel không phụ thuộc email
+    val accountViewModel: AccountViewModel = viewModel(
+        factory = AccountViewModelFactory(context)
     )
     val loginViewModel: LoginViewModel = viewModel(
         factory = LoginViewModelFactory(context)
@@ -54,14 +58,48 @@ fun AppNavGraph(navController: NavHostController) {
     val signUpViewModel: SignUpViewModel = viewModel(
         factory = SignUpViewModelFactory(context)
     )
+
+    // Observe current account
+    val currentAccount by accountViewModel.currentAccount.collectAsState()
+    val email = currentAccount?.email
+
+    // ViewModel phụ thuộc email – chỉ tạo sau khi login
+    val cartViewModel = remember(email) {
+        email?.let { CartViewModelFactory(context, it).create(CartViewModel::class.java) }
+    }
+    val profileViewModel = remember(email) {
+        email?.let { ProfileViewModelFactory(context, it).create(ProfileViewModel::class.java) }
+    }
+    val ordersViewModel = remember(email) {
+        email?.let { OrdersViewModelFactory(context, it).create(OrdersViewModel::class.java) }
+    }
+    val rewardsViewModel = remember(email) {
+        email?.let { RewardsViewModelFactory(context, it).create(RewardsViewModel::class.java) }
+    }
+
+    // Luôn bắt đầu từ splash
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
+
         composable(Screen.Splash.route) {
-            SplashScreen(navController)
-        }
-        composable(route = Screen.Home.route) {
-            HomeScreen(navController, profileViewModel = profileViewModel, rewardsViewModel = rewardsViewModel)
+            SplashScreen(navController, accountViewModel = accountViewModel)
         }
 
+        composable(Screen.Login.route) {
+            LoginScreen(navController, loginViewModel, accountViewModel)
+        }
+
+        composable(Screen.SignUp.route) {
+            SignUpScreen(navController, signUpViewModel)
+        }
+
+        // HOME
+        composable(Screen.Home.route) {
+            if (email != null && profileViewModel != null && rewardsViewModel != null) {
+                HomeScreen(navController, rewardsViewModel= rewardsViewModel, profileViewModel = profileViewModel)
+            }
+        }
+
+        // DETAILS
         composable(
             route = Screen.Details.route,
             arguments = listOf(
@@ -71,38 +109,63 @@ fun AppNavGraph(navController: NavHostController) {
                 navArgument("imageResId") { type = NavType.IntType }
             )
         ) { backStackEntry ->
-            val id = backStackEntry.arguments?.getInt("coffeeId") ?: return@composable
-            val name = backStackEntry.arguments?.getString("coffeeName") ?: ""
-            val price = backStackEntry.arguments?.getFloat("coffeePrice")?.toDouble() ?: 0.0
-            val imageRes = backStackEntry.arguments?.getInt("imageResId") ?: R.drawable.americano
+            if (email != null && cartViewModel != null) {
+                val id = backStackEntry.arguments?.getInt("coffeeId") ?: return@composable
+                val name = backStackEntry.arguments?.getString("coffeeName") ?: ""
+                val price = backStackEntry.arguments?.getFloat("coffeePrice")?.toDouble() ?: 0.0
+                val imageRes = backStackEntry.arguments?.getInt("imageResId") ?: R.drawable.americano
 
-            val coffeeItem = CoffeeItem(id, name, price, imageRes)
-
-            DetailsScreen(navController, coffeeItem,cartViewModel= cartViewModel)
+                val coffeeItem = CoffeeItem(id, name, price, imageRes)
+                DetailsScreen(navController, coffeeItem, cartViewModel = cartViewModel, accountViewModel = accountViewModel)
+            }
         }
+
+        // CART
         composable(Screen.Cart.route) {
-            CartScreen(navController, viewModel = cartViewModel, ordersViewModel = ordersViewModel, profileViewModel = profileViewModel, rewardsViewModel = rewardsViewModel)
+            if (email != null &&
+                cartViewModel != null &&
+                ordersViewModel != null &&
+                profileViewModel != null &&
+                rewardsViewModel != null
+            ) {
+                CartScreen(navController, cartViewModel, ordersViewModel, profileViewModel, rewardsViewModel)
+            }
         }
+
+        // ORDER SUCCESS
         composable(Screen.OrderSuccess.route) {
             OrderSuccessScreen(navController)
         }
+
+        // PROFILE
         composable(Screen.Profile.route) {
-            ProfileScreen(navController = navController, viewModel = profileViewModel)
+            if (profileViewModel != null) {
+                ProfileScreen(navController, profileViewModel)
+            }
         }
+
+        // REWARDS
         composable(Screen.Rewards.route) {
-            RewardsScreen(rewardsViewModel,navController)
+            if (rewardsViewModel != null) {
+                RewardsScreen(rewardsViewModel, navController)
+            }
         }
+
+        // MY ORDERS
         composable(Screen.MyOrder.route) {
-            OrdersScreen(ordersViewModel = ordersViewModel,navController = navController)
+            if (ordersViewModel != null) {
+                OrdersScreen(ordersViewModel, navController)
+            }
         }
+
+        // REDEEM
         composable(Screen.Redeem.route) {
-            RedeemScreen(rewardsViewModel,ordersViewModel,profileViewModel,navController)
-        }
-        composable(Screen.Login.route) {
-            LoginScreen(navController, loginViewModel)
-        }
-        composable(Screen.SignUp.route) {
-            SignUpScreen(navController, signUpViewModel)
+            if (rewardsViewModel != null &&
+                ordersViewModel != null &&
+                profileViewModel != null
+            ) {
+                RedeemScreen(rewardsViewModel, ordersViewModel, profileViewModel, accountViewModel, navController)
+            }
         }
     }
 }

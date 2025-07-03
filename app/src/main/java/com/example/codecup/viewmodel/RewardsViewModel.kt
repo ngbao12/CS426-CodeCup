@@ -24,7 +24,8 @@ import com.example.codecup.data.repository.RewardStatusRepository
 class RewardsViewModel(
     application: Application,
     private val rewardRepository: RewardRepository,
-    private val statusRepository: RewardStatusRepository
+    private val statusRepository: RewardStatusRepository,
+    private val userEmail: String
 ) : AndroidViewModel(application) {
 
     private val _rewardItems = mutableStateListOf<RewardItem>()
@@ -38,7 +39,7 @@ class RewardsViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val rewards = rewardRepository.getAllRewards()
+            val rewards = rewardRepository.getAllRewards(userEmail)
             val status = statusRepository.getStatus()
 
             withContext(Dispatchers.Main) {
@@ -56,7 +57,8 @@ class RewardsViewModel(
 
             RewardItem(
                 name = item.name,
-                points = points
+                points = points,
+                userEmail = userEmail
             )
         }
 
@@ -70,10 +72,26 @@ class RewardsViewModel(
             rewards.forEach { rewardRepository.addReward(it) }
             statusRepository.updateStatus(stampCount, totalPoints)
 
-            val updated = rewardRepository.getAllRewards()
+            val updated = rewardRepository.getAllRewards(userEmail)
             withContext(Dispatchers.Main) {
                 _rewardItems.clear()
                 _rewardItems.addAll(updated)
+            }
+        }
+    }
+
+    fun addNegativeReward(rewardItem: RewardItem, onComplete: () -> Unit) {
+        totalPoints += rewardItem.points
+
+        viewModelScope.launch(Dispatchers.IO) {
+            rewardRepository.addReward(rewardItem.copy(userEmail = userEmail))
+            statusRepository.updateStatus(stampCount, totalPoints)
+
+            val updated = rewardRepository.getAllRewards(userEmail)
+            withContext(Dispatchers.Main) {
+                _rewardItems.clear()
+                _rewardItems.addAll(updated)
+                onComplete()
             }
         }
     }
@@ -88,43 +106,23 @@ class RewardsViewModel(
     private fun calculatePoints(total: Double): Int {
         return (total * 10).toInt()
     }
-
-    fun addNegativeReward(rewardItem: RewardItem, onComplete: () -> Unit) {
-        totalPoints += rewardItem.points
-
-        viewModelScope.launch(Dispatchers.IO) {
-            rewardRepository.addReward(rewardItem)
-            statusRepository.updateStatus(stampCount, totalPoints)
-
-            val updated = rewardRepository.getAllRewards()
-            withContext(Dispatchers.Main) {
-                _rewardItems.clear()
-                _rewardItems.addAll(updated)
-                onComplete()
-            }
-        }
-    }
-
 }
 
-
 class RewardsViewModelFactory(
-    private val application: Application
+    private val application: Application,
+    private val userEmail: String
 ) : ViewModelProvider.Factory {
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val db = DatabaseProvider.getDatabase(application)
+        val rewardRepository = RewardRepository(db.rewardDao())
+        val rewardStatusRepository = RewardStatusRepository(db.rewardStatusDao(), userEmail)
 
-        val rewardDao = db.rewardDao()
-        val rewardStatusDao = db.rewardStatusDao()
-
-        val rewardRepository = RewardRepository(rewardDao)
-        val rewardStatusRepository = RewardStatusRepository(rewardStatusDao)
 
         if (modelClass.isAssignableFrom(RewardsViewModel::class.java)) {
-            return RewardsViewModel(application, rewardRepository, rewardStatusRepository) as T
+            return RewardsViewModel(application, rewardRepository, rewardStatusRepository, userEmail) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
-

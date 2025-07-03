@@ -25,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.codecup.viewmodel.SignUpViewModel
 import android.widget.Toast
+import com.example.codecup.navigation.Screen
 
 
 @Composable
@@ -88,12 +89,12 @@ fun SignUpScreen(
                 viewModel.register(
                     onSuccess = {
                         Toast.makeText(context, "Account created!", Toast.LENGTH_SHORT).show()
-                        navController.navigate("login") {
-                            popUpTo("signup") { inclusive = true }
+                        navController.navigate(Screen.Login.route) {
+                            popUpTo(Screen.SignUp.route) { inclusive = true }
                         }
                     },
                     onAccountExists = {
-                        Toast.makeText(context, "Account already exists", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Email is already registered", Toast.LENGTH_SHORT).show()
                     }
                 )
             },
@@ -109,7 +110,9 @@ fun SignUpScreen(
 
         Spacer(Modifier.height(12.dp))
 
-        TextButton(onClick = { navController.navigate("login") }) {
+        TextButton(onClick = {
+            navController.navigate(Screen.Login.route)
+        }) {
             Text("Already have an account? Login", color = Color(0xFF324A59))
         }
     }

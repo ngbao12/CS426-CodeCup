@@ -5,8 +5,9 @@ import com.example.codecup.data.model.CartItem
 
 @Dao
 interface CartDao {
-    @Query("SELECT * FROM cart_items")
-    suspend fun getAll(): List<CartItem>
+
+    @Query("SELECT * FROM cart_items WHERE userEmail = :email")
+    suspend fun getAll(email: String): List<CartItem>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(item: CartItem)
@@ -14,10 +15,6 @@ interface CartDao {
     @Delete
     suspend fun delete(item: CartItem)
 
-    @Query("DELETE FROM cart_items")
-    suspend fun clearAll()
-
-    @Query("DELETE FROM cart_items")
-    suspend fun clear()
-
+    @Query("DELETE FROM cart_items WHERE userEmail = :email")
+    suspend fun clearAll(email: String)
 }

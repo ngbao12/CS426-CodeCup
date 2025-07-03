@@ -15,7 +15,8 @@ data class CartItem(
     val shot: String,
     val select: String,
     val size: String,
-    val ice: String
+    val ice: String,
+    val userEmail: String
 ){
     val uniqueKey: String
         get() = "$id-$shot-$select-$size-$ice"

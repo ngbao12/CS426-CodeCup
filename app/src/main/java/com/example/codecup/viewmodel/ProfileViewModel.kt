@@ -15,7 +15,8 @@ import com.example.codecup.data.repository.UserProfileRepository
 
 class ProfileViewModel(
     application: Application,
-    private val repository: UserProfileRepository
+    private val repository: UserProfileRepository,
+    private val userEmail: String
 ) : AndroidViewModel(application) {
 
     private val _profile = MutableStateFlow<UserProfile?>(null)
@@ -29,20 +30,22 @@ class ProfileViewModel(
 
     init {
         viewModelScope.launch {
-            _profile.value = repository.getProfile()
+            _profile.value = repository.getProfile(userEmail)
         }
     }
 
     fun saveProfile(profile: UserProfile) {
         viewModelScope.launch {
-            repository.saveProfile(profile)
-            _profile.value = profile
+            val updated = profile.copy(email = userEmail)
+            repository.saveProfile(updated)
+            _profile.value = updated
         }
     }
 }
 
 class ProfileViewModelFactory(
-    private val application: Application
+    private val application: Application,
+    private val userEmail: String
 ) : ViewModelProvider.Factory {
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -55,7 +58,6 @@ class ProfileViewModelFactory(
         val dao = db.userDao()
         val repository = UserProfileRepository(dao)
 
-        return ProfileViewModel(application, repository) as T
+        return ProfileViewModel(application, repository, userEmail) as T
     }
 }
-

@@ -67,19 +67,19 @@ fun SwipeToDismissItem(
     )
 }
 
-@Preview(showBackground = true)
-@Composable
-fun PreviewSwipeToDismissItem() {
-    val dummyItem = CartItem(
-        id = 1,
-        name = "Cappuccino",
-        price = 3.0,
-        quantity = 1,
-        imageRes = R.drawable.cappuccino,
-        shot = "single",
-        select = "iced",
-        size = "medium",
-        ice = "full ice"
-    )
-    SwipeToDismissItem(item = dummyItem, onRemove = {})
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun PreviewSwipeToDismissItem() {
+//    val dummyItem = CartItem(
+//        id = 1,
+//        name = "Cappuccino",
+//        price = 3.0,
+//        quantity = 1,
+//        imageRes = R.drawable.cappuccino,
+//        shot = "single",
+//        select = "iced",
+//        size = "medium",
+//        ice = "full ice"
+//    )
+//    SwipeToDismissItem(item = dummyItem, onRemove = {})
+//}
