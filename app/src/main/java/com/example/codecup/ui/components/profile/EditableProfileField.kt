@@ -31,7 +31,8 @@ fun EditableProfileField(
     isEditing: Boolean,
     onValueChange: (String) -> Unit,
     onEditClick: () -> Unit,
-    onDoneEditing: () -> Unit
+    onDoneEditing: () -> Unit,
+    isEditingEnabled: Boolean = true
 ) {
     Row(
         modifier = Modifier
@@ -40,7 +41,6 @@ fun EditableProfileField(
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-
         Box(
             modifier = Modifier
                 .size(40.dp)
@@ -75,7 +75,9 @@ fun EditableProfileField(
                         unfocusedIndicatorColor = Color.LightGray,
                     ),
                     textStyle = LocalTextStyle.current.copy(fontSize = 14.sp),
-                    modifier = Modifier.fillMaxWidth().padding(end = 10.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 10.dp),
                     maxLines = 3,
                     keyboardOptions = KeyboardOptions.Default,
                     keyboardActions = KeyboardActions(onDone = { onDoneEditing() })
@@ -91,12 +93,21 @@ fun EditableProfileField(
                 )
             }
         }
-        IconButton(onClick = onEditClick) {
-            Icon(
-                painter = painterResource(id = R.drawable.ic_edit),
-                contentDescription = "Edit",
-                tint = Color(0xFF1C1C1C)
-            )
+
+        if (isEditingEnabled) {
+            IconButton(onClick = {
+                if (isEditing) {
+                    onDoneEditing()
+                } else {
+                    onEditClick()
+                }
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_edit),
+                    contentDescription = "Edit",
+                    tint = Color(0xFF1C1C1C)
+                )
+            }
         }
     }
 }

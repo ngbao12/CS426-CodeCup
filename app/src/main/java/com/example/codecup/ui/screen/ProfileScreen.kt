@@ -114,11 +114,13 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = vi
             icon = R.drawable.ic_email,
             label = "Email",
             value = email,
-            isEditing = false, // Disable editing email
+            isEditing = false,
             onValueChange = {},
             onEditClick = {},
-            onDoneEditing = {}
+            onDoneEditing = {},
+            isEditingEnabled = false
         )
+
 
         EditableProfileField(
             icon = R.drawable.ic_location,
