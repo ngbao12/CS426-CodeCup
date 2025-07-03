@@ -27,8 +27,12 @@ import com.example.codecup.ui.screen.RewardsScreen
 import com.example.codecup.viewmodel.RewardsViewModel
 import com.example.codecup.viewmodel.RewardsViewModelFactory
 import com.example.codecup.ui.screen.RedeemScreen
-
-
+import com.example.codecup.ui.screen.LoginScreen
+import com.example.codecup.viewmodel.LoginViewModelFactory
+import com.example.codecup.viewmodel.LoginViewModel
+import com.example.codecup.ui.screen.SignUpScreen
+import com.example.codecup.viewmodel.SignUpViewModelFactory
+import com.example.codecup.viewmodel.SignUpViewModel
 @Composable
 fun AppNavGraph(navController: NavHostController) {
     val context = LocalContext.current.applicationContext as Application
@@ -43,6 +47,12 @@ fun AppNavGraph(navController: NavHostController) {
     )
     val rewardsViewModel: RewardsViewModel = viewModel(
         factory = RewardsViewModelFactory(context)
+    )
+    val loginViewModel: LoginViewModel = viewModel(
+        factory = LoginViewModelFactory(context)
+    )
+    val signUpViewModel: SignUpViewModel = viewModel(
+        factory = SignUpViewModelFactory(context)
     )
     NavHost(navController = navController, startDestination = Screen.Splash.route) {
         composable(Screen.Splash.route) {
@@ -88,6 +98,11 @@ fun AppNavGraph(navController: NavHostController) {
         composable(Screen.Redeem.route) {
             RedeemScreen(rewardsViewModel,ordersViewModel,profileViewModel,navController)
         }
-
+        composable(Screen.Login.route) {
+            LoginScreen(navController, loginViewModel)
+        }
+        composable(Screen.SignUp.route) {
+            SignUpScreen(navController, signUpViewModel)
+        }
     }
 }

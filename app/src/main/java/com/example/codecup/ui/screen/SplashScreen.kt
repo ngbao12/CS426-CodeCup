@@ -21,7 +21,7 @@ import androidx.compose.ui.res.painterResource
 fun SplashScreen(navController: NavController) {
     LaunchedEffect(Unit) {
         delay(2000) // đợi 2s rồi điều hướng
-        navController.navigate(Screen.Home.route) {
+        navController.navigate("login") {
             popUpTo(Screen.Splash.route) { inclusive = true }
         }
     }

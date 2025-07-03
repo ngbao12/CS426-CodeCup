@@ -21,4 +21,6 @@ sealed class Screen(val route: String, val title: String, val icon: Int) {
     object Splash : Screen("splash", "Splash", R.drawable.ic_my_order)
     object Cart : Screen("cart", "Cart", R.drawable.ic_cart)
     object Redeem: Screen("redeem", "Redeem", R.drawable.ic_cart)
+    object Login: Screen("login", "Login", R.drawable.ic_my_order)
+    object SignUp: Screen("signup", "Sign Up", R.drawable.ic_my_order)
 }

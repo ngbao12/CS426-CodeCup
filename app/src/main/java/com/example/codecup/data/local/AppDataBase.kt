@@ -9,12 +9,14 @@ import com.example.codecup.data.local.UserDao
 import com.example.codecup.data.model.OrderItem
 import com.example.codecup.data.model.RewardItem
 import com.example.codecup.data.model.RewardStatus
+import com.example.codecup.data.model.Account
 
-@Database(entities = [CartItem::class, UserProfile::class, OrderItem::class, RewardItem::class, RewardStatus::class], version = 8)
+@Database(entities = [CartItem::class, UserProfile::class, OrderItem::class, RewardItem::class, RewardStatus::class, Account::class], version = 9)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun cartDao(): CartDao
     abstract fun userDao(): UserDao
     abstract fun orderDao(): OrderDao
     abstract fun rewardDao(): RewardDao
     abstract fun rewardStatusDao(): RewardStatusDao
+    abstract fun accountDao(): AccountDao
 }
