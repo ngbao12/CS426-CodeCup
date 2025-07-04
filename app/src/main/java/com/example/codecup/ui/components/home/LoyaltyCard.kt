@@ -70,12 +70,15 @@ fun LoyaltyCard(stamps: Int) {
                 ) {
                     repeat(8) { index ->
                         val alpha = if (index < stamps) 1f else 0.3f
-                        Image(
+                        Icon(
                             painter = painterResource(id = R.drawable.ic_coffee_stamp),
                             contentDescription = "Coffee Stamp",
+                            tint = if (index < stamps)
+                                MaterialTheme.colorScheme.tertiary
+                            else
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                             modifier = Modifier
                                 .size(24.dp)
-                                .alpha(alpha)
                         )
                     }
                 }
