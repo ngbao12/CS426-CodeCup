@@ -3,6 +3,7 @@ package com.example.codecup.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.codecup.R
 import com.example.codecup.data.model.CoffeeItem
+import java.util.*
 
 class HomeViewModel : ViewModel() {
 
@@ -13,4 +14,15 @@ class HomeViewModel : ViewModel() {
         CoffeeItem(4, "Flat White", 5.0, R.drawable.flat_white)
     )
     val stamps = 4
+
+    fun getGreeting(): String {
+        val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+        return when (hour) {
+            in 5..11 -> "Good morning"
+            in 12..17 -> "Good afternoon"
+            in 18..21 -> "Good evening"
+            else -> "Good night"
+        }
+    }
+
 }

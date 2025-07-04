@@ -37,7 +37,7 @@ fun HomeScreen(
     Scaffold(
         containerColor = backgroundColor,
         topBar = {
-            AppHeader(userName = profileViewModel.userName, navController = navController)
+            AppHeader(greeting = viewModel.getGreeting(),userName = profileViewModel.userName, navController = navController)
         }
     ) { padding ->
         Column(
@@ -94,3 +94,5 @@ fun HomeScreen(
         }
     }
 }
+
+

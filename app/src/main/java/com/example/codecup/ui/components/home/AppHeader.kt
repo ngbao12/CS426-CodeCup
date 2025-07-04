@@ -20,7 +20,7 @@ import androidx.compose.material3.IconButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppHeader(userName: String, navController: NavController) {
+fun AppHeader(greeting: String,userName: String, navController: NavController) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -31,7 +31,7 @@ fun AppHeader(userName: String, navController: NavController) {
         // Left: greeting text
         Column {
             Text(
-                text = "Good morning",
+                text = greeting,
                 style = MaterialTheme.typography.labelLarge.copy(
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                     fontSize = 14.sp
@@ -75,5 +75,5 @@ fun AppHeader(userName: String, navController: NavController) {
 @Composable
 fun AppHeaderPreview() {
     val navController = rememberNavController()
-    AppHeader(userName = "Ngoc Bao", navController = navController)
+    AppHeader("Good morning",userName = "Ngoc Bao", navController = navController)
 }
