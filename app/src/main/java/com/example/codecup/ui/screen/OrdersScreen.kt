@@ -17,13 +17,14 @@ import androidx.navigation.NavController
 import com.example.codecup.viewmodel.OrdersViewModel
 import com.example.codecup.ui.components.order.OrderItemCard
 import com.example.codecup.ui.components.order.CenteredTopBar
-import kotlinx.coroutines.delay
-import androidx.compose.material3.*
-import com.example.codecup.data.model.OrderItem
-import com.example.codecup.data.repository.OrderRepository
 import com.example.codecup.ui.components.home.AppBottomNav
 import androidx.compose.material.DismissValue
 import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.RateReview
+import androidx.compose.ui.Alignment
+import com.example.codecup.navigation.Screen
+
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -94,15 +95,40 @@ fun OrdersScreen(
                         }
                     )
 
-                   SwipeToDismiss(
+                    SwipeToDismiss(
                         state = dismissState,
                         background = {},
                         directions = if (selectedTab == 0) setOf(DismissDirection.EndToStart) else emptySet()
                     ) {
-                        OrderItemCard(
-                            order = order,
-                            modifier = Modifier.animateItem()
-                        )
+                        Column {
+                            OrderItemCard(
+                                order = order,
+                                modifier = Modifier.animateItem()
+                            )
+
+
+                            if (selectedTab == 1) {
+                                TextButton(
+                                    onClick = {
+                                        navController.navigate(Screen.Review.createRoute(order.id))
+                                    },
+                                    modifier = Modifier
+                                        .padding(top = 4.dp, start = 8.dp)
+                                        .align(Alignment.End)
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.RateReview,
+                                        contentDescription = "Review",
+                                        tint = MaterialTheme.colorScheme.primary
+                                    )
+                                    Spacer(modifier = Modifier.width(4.dp))
+                                    Text(
+                                        text = "Review",
+                                        color = MaterialTheme.colorScheme.primary
+                                    )
+                                }
+                            }
+                        }
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))

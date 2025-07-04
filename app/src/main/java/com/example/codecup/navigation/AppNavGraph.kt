@@ -48,7 +48,6 @@ import androidx.compose.runtime.remember
 fun AppNavGraph(navController: NavHostController) {
     val context = LocalContext.current.applicationContext as Application
 
-    // ViewModel không phụ thuộc email
     val accountViewModel: AccountViewModel = viewModel(
         factory = AccountViewModelFactory(context)
     )
@@ -59,11 +58,9 @@ fun AppNavGraph(navController: NavHostController) {
         factory = SignUpViewModelFactory(context)
     )
 
-    // Observe current account
     val currentAccount by accountViewModel.currentAccount.collectAsState()
     val email = currentAccount?.email
 
-    // ViewModel phụ thuộc email – chỉ tạo sau khi login
     val cartViewModel = remember(email) {
         email?.let { CartViewModelFactory(context, it).create(CartViewModel::class.java) }
     }
@@ -165,6 +162,17 @@ fun AppNavGraph(navController: NavHostController) {
                 profileViewModel != null
             ) {
                 RedeemScreen(rewardsViewModel, ordersViewModel, profileViewModel, accountViewModel, navController)
+            }
+        }
+
+        //Review
+        composable(
+            route = Screen.Review.route,
+            arguments = listOf(navArgument("orderId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            if (ordersViewModel != null) {
+                val orderId = backStackEntry.arguments?.getInt("orderId") ?: return@composable
+                ReviewScreen(orderId = orderId, ordersViewModel = ordersViewModel, navController = navController)
             }
         }
     }

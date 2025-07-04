@@ -23,4 +23,9 @@ sealed class Screen(val route: String, val title: String, val icon: Int) {
     object Redeem: Screen("redeem", "Redeem", R.drawable.ic_cart)
     object Login: Screen("login", "Login", R.drawable.ic_my_order)
     object SignUp: Screen("signup", "Sign Up", R.drawable.ic_my_order)
+
+    object Review : Screen("review/{orderId}", "Review", R.drawable.ic_my_order) {
+        fun createRoute(orderId: Int): String = "review/$orderId"
+    }
+
 }

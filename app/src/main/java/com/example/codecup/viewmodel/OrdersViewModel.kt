@@ -13,15 +13,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.room.Room
-import com.example.codecup.data.local.AppDatabase
 import com.example.codecup.data.local.DatabaseProvider
 import com.example.codecup.data.model.RewardItem
+import com.example.codecup.data.local.ReviewDao
+import com.example.codecup.data.model.Review
 
 
 class OrdersViewModel(
     application: Application,
     private val repository: OrderRepository,
+    private val reviewDao: ReviewDao,
     private val userEmail: String
 ) : AndroidViewModel(application) {
 
@@ -77,6 +78,22 @@ class OrdersViewModel(
             repository.insertOrder(listOf(order))
         }
     }
+
+    fun getReviewByOrderId(orderId: Int, onLoaded: (Review?) -> Unit) {
+        viewModelScope.launch {
+            val review = reviewDao.getReviewByOrderIdAndUser(orderId, userEmail)
+            onLoaded(review)
+        }
+    }
+
+    fun saveReview(orderId: Int, text: String, onSaved: () -> Unit) {
+        viewModelScope.launch {
+            reviewDao.insertReview(
+                Review(orderId = orderId, userEmail = userEmail, text = text)
+            )
+            onSaved()
+        }
+    }
 }
 
 class OrdersViewModelFactory(
@@ -87,9 +104,10 @@ class OrdersViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         val db = DatabaseProvider.getDatabase(application)
         val repository = OrderRepository(db.orderDao())
+        val reviewDao = db.reviewDao()
 
         if (modelClass.isAssignableFrom(OrdersViewModel::class.java)) {
-            return OrdersViewModel(application, repository, userEmail) as T
+            return OrdersViewModel(application, repository, reviewDao, userEmail) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
