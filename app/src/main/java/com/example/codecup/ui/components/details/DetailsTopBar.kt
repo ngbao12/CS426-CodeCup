@@ -23,24 +23,41 @@ fun DetailsTopBar(
     TopAppBar(
         modifier = Modifier.fillMaxWidth(),
         title = {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                Text("Details", style = MaterialTheme.typography.titleMedium)
+            Box(
+                modifier = Modifier.fillMaxWidth(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = "Details",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
             }
         },
         navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
             }
         },
         actions = {
             IconButton(onClick = onCartClick) {
-                Icon(painter = painterResource(id = R.drawable.ic_cart), contentDescription = "Cart")
+                Icon(
+                    painter = painterResource(id = R.drawable.ic_cart),
+                    contentDescription = "Cart",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = Color.White)
+            containerColor = MaterialTheme.colorScheme.background
+        )
     )
 }
+
 
 @Preview(showBackground = true)
 @Composable

@@ -4,7 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.*
+import androidx.compose.material3.*
 import androidx.compose.material.DismissDirection
 import androidx.compose.material.SwipeToDismiss
 import androidx.compose.material.rememberDismissState
@@ -22,6 +22,8 @@ import androidx.compose.material3.*
 import com.example.codecup.data.model.OrderItem
 import com.example.codecup.data.repository.OrderRepository
 import com.example.codecup.ui.components.home.AppBottomNav
+import androidx.compose.material.DismissValue
+import androidx.compose.material.ExperimentalMaterialApi
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
@@ -36,25 +38,27 @@ fun OrdersScreen(
     val tabs = listOf("On going", "History")
 
     Scaffold(
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.background,
         bottomBar = {
             Box(modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp)) {
                 AppBottomNav(navController)
             }
         },
-        topBar = { CenteredTopBar(title = "My Order", navController = navController) }
+        topBar = {
+            CenteredTopBar(title = "My Order", navController = navController)
+        }
     ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.White)
+                .background(MaterialTheme.colorScheme.background)
                 .padding(padding)
         ) {
             TabRow(
                 selectedTabIndex = selectedTab,
                 modifier = Modifier.fillMaxWidth(),
-                containerColor = Color.White,
-                contentColor = Color(0xFF324A59)
+                containerColor = MaterialTheme.colorScheme.background,
+                contentColor = MaterialTheme.colorScheme.primary
             ) {
                 tabs.forEachIndexed { index, title ->
                     androidx.compose.material.Tab(
@@ -63,7 +67,8 @@ fun OrdersScreen(
                         text = {
                             androidx.compose.material.Text(
                                 text = title,
-                                fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal
+                                fontWeight = if (selectedTab == index) FontWeight.Bold else FontWeight.Normal,
+                                color = MaterialTheme.colorScheme.onBackground
                             )
                         }
                     )
@@ -81,15 +86,15 @@ fun OrdersScreen(
                     val dismissState = rememberDismissState(
                         confirmStateChange = { dismissValue ->
                             if (dismissValue == DismissValue.DismissedToStart && selectedTab == 0) {
-                                ordersViewModel.markAsHistory(order) // Gọi ngay
-                                true // Cho phép Compose remove item
+                                ordersViewModel.markAsHistory(order)
+                                true
                             } else {
                                 false
                             }
                         }
                     )
 
-                    SwipeToDismiss(
+                   SwipeToDismiss(
                         state = dismissState,
                         background = {},
                         directions = if (selectedTab == 0) setOf(DismissDirection.EndToStart) else emptySet()

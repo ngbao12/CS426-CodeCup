@@ -28,10 +28,17 @@ fun HomeScreen(
     profileViewModel: ProfileViewModel = viewModel(),
     rewardsViewModel: RewardsViewModel = viewModel()
 ) {
+    val primaryContainer = MaterialTheme.colorScheme.primary
+    val surfaceColor = MaterialTheme.colorScheme.surface
+    val backgroundColor = MaterialTheme.colorScheme.background
+    val onPrimary = MaterialTheme.colorScheme.onPrimary
+    val onSurface = MaterialTheme.colorScheme.onSurface
 
     Scaffold(
-        containerColor = Color.White,
-        topBar = { AppHeader(userName = profileViewModel.userName, navController = navController) },
+        containerColor = backgroundColor,
+        topBar = {
+            AppHeader(userName = profileViewModel.userName, navController = navController)
+        }
     ) { padding ->
         Column(
             modifier = Modifier
@@ -44,15 +51,16 @@ fun HomeScreen(
                     .padding(horizontal = 20.dp, vertical = 12.dp),
                 shape = RoundedCornerShape(16.dp),
                 shadowElevation = 8.dp,
-                color = Color(0xFF324A59)
+                color = primaryContainer
             ) {
                 LoyaltyCard(stamps = rewardsViewModel.stampCount)
             }
+
             Spacer(modifier = Modifier.height(20.dp))
+
             Surface(
-                modifier = Modifier
-                    .fillMaxSize(),
-                color = Color(0xFF324A59),
+                modifier = Modifier.fillMaxSize(),
+                color = primaryContainer,
                 shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
                 shadowElevation = 8.dp
             ) {
@@ -67,7 +75,7 @@ fun HomeScreen(
                         Text(
                             text = "Choose your coffee",
                             style = MaterialTheme.typography.titleMedium.copy(
-                                color = Color(0xFFCBD4D9)
+                                color = onPrimary
                             )
                         )
                         Spacer(modifier = Modifier.height(20.dp))
@@ -79,22 +87,10 @@ fun HomeScreen(
                             }
                         )
                     }
+
                     AppBottomNav(navController = navController)
                 }
             }
         }
     }
 }
-
-
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewHomeScreen() {
-    val navController = rememberNavController()
-    HomeScreen(
-        navController = navController
-
-    )
-}
-

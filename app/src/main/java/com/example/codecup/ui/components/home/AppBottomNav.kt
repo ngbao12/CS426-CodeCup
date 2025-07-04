@@ -25,13 +25,13 @@ fun AppBottomNav(navController: NavController, modifier: Modifier = Modifier) {
     Surface(
         shape = RoundedCornerShape(24.dp),
         shadowElevation = 8.dp,
-        color = Color.White
+        color = MaterialTheme.colorScheme.surface
     ) {
         NavigationBar(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(72.dp),
-            containerColor = Color.Transparent,
+            containerColor = MaterialTheme.colorScheme.surface
         ) {
             val navBackStackEntry = navController.currentBackStackEntryAsState().value
             val currentRoute = navBackStackEntry?.destination?.route
@@ -59,7 +59,7 @@ fun AppBottomNav(navController: NavController, modifier: Modifier = Modifier) {
                     alwaysShowLabel = false,
                     colors = NavigationBarItemDefaults.colors(
                         selectedIconColor = MaterialTheme.colorScheme.primary,
-                        unselectedIconColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f),
+                        unselectedIconColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.4f),
                         indicatorColor = Color.Transparent
                     )
                 )
@@ -67,6 +67,7 @@ fun AppBottomNav(navController: NavController, modifier: Modifier = Modifier) {
         }
     }
 }
+
 
 
 @Preview(showBackground = true)

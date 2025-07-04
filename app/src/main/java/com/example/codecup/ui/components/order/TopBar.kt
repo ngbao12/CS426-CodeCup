@@ -27,14 +27,14 @@ fun CenteredTopBar(
                     modifier = Modifier.align(Alignment.Center),
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.titleLarge.copy(
-                        color = Color(0xFF324A59),
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontWeight = FontWeight.Bold
                     )
                 )
             }
         },
         colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.surface
         )
     )
 }

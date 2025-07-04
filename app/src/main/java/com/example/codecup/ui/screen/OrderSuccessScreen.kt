@@ -21,15 +21,13 @@ import androidx.compose.foundation.background
 @Composable
 fun OrderSuccessScreen(navController: NavController) {
     Column(
-
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        // Image
         Image(
             painter = painterResource(id = R.drawable.ic_order_success),
             contentDescription = null,
@@ -40,14 +38,19 @@ fun OrderSuccessScreen(navController: NavController) {
 
         Text(
             text = "Order Success",
-            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+            style = MaterialTheme.typography.titleLarge.copy(
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onBackground
+            )
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
             text = "Your order has been placed successfully.\nFor more details, go to my orders.",
-            style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray),
+            style = MaterialTheme.typography.bodyMedium.copy(
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
+            ),
             textAlign = TextAlign.Center
         )
 
@@ -59,9 +62,15 @@ fun OrderSuccessScreen(navController: NavController) {
                 .fillMaxWidth()
                 .height(48.dp),
             shape = RoundedCornerShape(24.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF324A59))
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary
+            )
         ) {
-            Text("Track My Order", fontWeight = FontWeight.Bold)
+            Text(
+                "Track My Order",
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
 }

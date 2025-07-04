@@ -31,15 +31,26 @@ fun RedeemItemCard(item: RedeemItem, onRedeem: () -> Unit) {
         )
         Spacer(Modifier.width(16.dp))
         Column(Modifier.weight(1f)) {
-            Text(item.name, fontWeight = FontWeight.Bold)
-            Text("Valid until ${item.validUntil}", style = MaterialTheme.typography.bodySmall)
+            Text(
+                text = item.name,
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            )
+            Text(
+                text = "Valid until ${item.validUntil}",
+                style = MaterialTheme.typography.bodySmall.copy(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                )
+            )
         }
         Button(
             onClick = onRedeem,
             shape = RoundedCornerShape(20.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color(0xFF324A59),
-                contentColor = Color.White
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
             )
         ) {
             Text("${item.pointCost} pts")

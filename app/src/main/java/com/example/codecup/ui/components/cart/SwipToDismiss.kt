@@ -41,7 +41,7 @@ fun SwipeToDismissItem(
         background = {},
         dismissContent = {
             Card(
-                colors = CardDefaults.cardColors(containerColor = Color(0xFFF7F8FB)),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
                 modifier = Modifier
                     .padding(vertical = 8.dp)
                     .fillMaxWidth(),
@@ -56,11 +56,27 @@ fun SwipeToDismissItem(
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(item.name, fontWeight = FontWeight.Bold)
-                        Text("${item.shot} | ${item.select} | ${item.size} | ${item.ice}", fontSize = 12.sp)
-                        Text("x${item.quantity}", fontSize = 12.sp)
+                        Text(
+                            item.name,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
+                        Text(
+                            "${item.shot} | ${item.select} | ${item.size} | ${item.ice}",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                        )
+                        Text(
+                            "x${item.quantity}",
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                        )
                     }
-                    Text("$${"%.2f".format(item.price)}")
+                    Text(
+                        "$${"%.2f".format(item.price)}",
+                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Medium
+                    )
                 }
             }
         }

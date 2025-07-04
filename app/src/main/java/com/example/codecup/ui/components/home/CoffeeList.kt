@@ -40,7 +40,9 @@ fun CoffeeList(
                     .clickable { onItemClick(coffee) },
                 shape = RoundedCornerShape(16.dp),
                 elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
-                colors = CardDefaults.cardColors(containerColor = Color.White)
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surface
+                )
             ) {
                 Column(
                     modifier = Modifier
@@ -59,7 +61,7 @@ fun CoffeeList(
                         text = coffee.name,
                         style = MaterialTheme.typography.bodyMedium.copy(
                             fontWeight = FontWeight.SemiBold,
-                            color = Color(0xFF324A59)
+                            color = MaterialTheme.colorScheme.onSurface
                         ),
                         textAlign = TextAlign.Center
                     )
@@ -68,3 +70,4 @@ fun CoffeeList(
         }
     }
 }
+

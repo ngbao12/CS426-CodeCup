@@ -25,7 +25,7 @@ fun LoyaltyCard(stamps: Int) {
         shape = RoundedCornerShape(16.dp),
         elevation = CardDefaults.cardElevation(4.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFF324A59) // Màu nền đậm
+            containerColor = MaterialTheme.colorScheme.primary
         )
     ) {
         Column(
@@ -41,12 +41,12 @@ fun LoyaltyCard(stamps: Int) {
             ) {
                 Text(
                     text = "Loyalty card",
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.surface,
                     style = MaterialTheme.typography.titleMedium.copy(fontSize = 16.sp)
                 )
                 Text(
                     text = "$stamps / 8",
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.surface,
                     style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp)
                 )
             }
@@ -57,7 +57,7 @@ fun LoyaltyCard(stamps: Int) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        color = Color.White,
+                        color = MaterialTheme.colorScheme.background,
                         shape = RoundedCornerShape(12.dp)
                     )
                     .padding(vertical = 12.dp),

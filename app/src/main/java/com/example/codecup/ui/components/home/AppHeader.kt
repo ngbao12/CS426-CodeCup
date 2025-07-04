@@ -40,6 +40,7 @@ fun AppHeader(userName: String, navController: NavController) {
             Text(
                 text = userName,
                 style = MaterialTheme.typography.titleMedium.copy(
+                    color = MaterialTheme.colorScheme.onSurface,
                     fontWeight = FontWeight.Bold,
                     fontSize = 20.sp
                 )
@@ -68,6 +69,7 @@ fun AppHeader(userName: String, navController: NavController) {
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

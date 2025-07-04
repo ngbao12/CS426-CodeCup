@@ -44,13 +44,16 @@ fun EditableProfileField(
         Box(
             modifier = Modifier
                 .size(40.dp)
-                .background(Color(0xFFF7F8FB), shape = CircleShape),
+                .background(
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    shape = CircleShape
+                ),
             contentAlignment = Alignment.Center
         ) {
             Icon(
                 painter = painterResource(id = icon),
                 contentDescription = label,
-                tint = Color(0xFF0D1A26),
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(20.dp)
             )
         }
@@ -60,7 +63,9 @@ fun EditableProfileField(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = label,
-                style = MaterialTheme.typography.labelSmall.copy(color = Color.Gray)
+                style = MaterialTheme.typography.labelSmall.copy(
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f)
+                )
             )
 
             if (isEditing) {
@@ -69,10 +74,10 @@ fun EditableProfileField(
                     onValueChange = onValueChange,
                     singleLine = true,
                     colors = TextFieldDefaults.colors(
-                        focusedContainerColor = Color.White,
-                        unfocusedContainerColor = Color.White,
-                        focusedIndicatorColor = Color(0xFF324A59),
-                        unfocusedIndicatorColor = Color.LightGray,
+                        focusedContainerColor = MaterialTheme.colorScheme.surface,
+                        unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
+                        unfocusedIndicatorColor = MaterialTheme.colorScheme.outline
                     ),
                     textStyle = LocalTextStyle.current.copy(fontSize = 14.sp),
                     modifier = Modifier
@@ -87,7 +92,7 @@ fun EditableProfileField(
                     text = value,
                     style = MaterialTheme.typography.bodyMedium.copy(
                         fontWeight = FontWeight.Bold,
-                        color = Color(0xFF324A59),
+                        color = MaterialTheme.colorScheme.onSurface,
                         fontSize = 14.sp
                     )
                 )
@@ -96,16 +101,12 @@ fun EditableProfileField(
 
         if (isEditingEnabled) {
             IconButton(onClick = {
-                if (isEditing) {
-                    onDoneEditing()
-                } else {
-                    onEditClick()
-                }
+                if (isEditing) onDoneEditing() else onEditClick()
             }) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_edit),
                     contentDescription = "Edit",
-                    tint = Color(0xFF1C1C1C)
+                    tint = MaterialTheme.colorScheme.onSurface
                 )
             }
         }

@@ -30,6 +30,11 @@ fun OptionSelector(
     onSelect: (Int) -> Unit
 ) {
     Log.d("OptionSelector", "OptionSelector recomposed with label=$label, selectedIndex=$selectedIndex")
+
+    val primary = MaterialTheme.colorScheme.primary
+    val outline = MaterialTheme.colorScheme.outline
+    val onBackground = MaterialTheme.colorScheme.onBackground
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -38,8 +43,9 @@ fun OptionSelector(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            label,
+            text = label,
             style = MaterialTheme.typography.bodyLarge,
+            color = onBackground,
             modifier = Modifier.weight(1f)
         )
 
@@ -56,12 +62,12 @@ fun OptionSelector(
                             Log.d("OptionSelector", "Text option clicked: index=$index, option=$option")
                             onSelect(index)
                         },
-                        border = BorderStroke(2.dp, if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray),
+                        border = BorderStroke(2.dp, if (isSelected) primary else outline),
                         modifier = Modifier
                             .padding(start = 8.dp)
                             .height(28.dp),
                         colors = ButtonDefaults.outlinedButtonColors(
-                            contentColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
+                            contentColor = if (isSelected) primary else outline
                         )
                     ) {
                         Text(
@@ -84,7 +90,7 @@ fun OptionSelector(
                             .padding(start = 8.dp)
                             .size(48.dp)
                             .background(
-                                color = if (isSelected) MaterialTheme.colorScheme.primary.copy(alpha = 0.1f) else Color.Transparent,
+                                color = if (isSelected) primary.copy(alpha = 0.1f) else Color.Transparent,
                                 shape = RoundedCornerShape(8.dp)
                             )
                     ) {
@@ -92,7 +98,7 @@ fun OptionSelector(
                             painter = painterResource(id = iconData.resId),
                             contentDescription = iconData.description,
                             modifier = Modifier.size(iconData.size.dp),
-                            tint = if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray
+                            tint = if (isSelected) primary else outline
                         )
                     }
                 }

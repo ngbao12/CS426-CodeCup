@@ -71,7 +71,7 @@ fun DetailsScreen(
         ModalBottomSheet(
             onDismissRequest = { showBottomSheet = false },
             sheetState = sheetState,
-            containerColor = Color.White
+            containerColor = MaterialTheme.colorScheme.background
         ) {
             CartPreview(cartViewModel = cartViewModel)
 
@@ -86,15 +86,15 @@ fun DetailsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF324A59))
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
-                Text("Close")
+                Text("Close", color = MaterialTheme.colorScheme.onPrimary)
             }
         }
     }
 
     Scaffold(
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             DetailsTopBar(
                 navController = navController,
@@ -115,7 +115,7 @@ fun DetailsScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(155.dp)
-                    .background(Color(0xFFF7F8FB), shape = RoundedCornerShape(15.dp)),
+                    .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(15.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Image(
@@ -132,28 +132,32 @@ fun DetailsScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(coffeeItem.name, style = MaterialTheme.typography.bodyLarge)
+                Text(coffeeItem.name, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onBackground)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = { viewModel.decreaseQuantity() }) {
-                        Icon(Icons.Default.Remove, contentDescription = "Decrease", modifier = Modifier.size(13.dp))
+                        Icon(Icons.Default.Remove, contentDescription = "Decrease", modifier = Modifier.size(13.dp), tint = MaterialTheme.colorScheme.onBackground)
                     }
-                    Text(quantity.toString(), fontSize = 16.sp, modifier = Modifier.padding(horizontal = 4.dp))
+                    Text(quantity.toString(), fontSize = 16.sp, modifier = Modifier.padding(horizontal = 4.dp), color = MaterialTheme.colorScheme.onBackground)
                     IconButton(onClick = { viewModel.increaseQuantity() }) {
-                        Icon(Icons.Default.Add, contentDescription = "Increase", modifier = Modifier.size(13.dp))
+                        Icon(Icons.Default.Add, contentDescription = "Increase", modifier = Modifier.size(13.dp), tint = MaterialTheme.colorScheme.onBackground)
                     }
                 }
             }
 
-            HorizontalDivider(color = Color.LightGray.copy(alpha = 0.3f), thickness = 1.dp, modifier = Modifier.padding(vertical = 6.dp))
+            HorizontalDivider(
+                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f),
+                thickness = 1.dp,
+                modifier = Modifier.padding(vertical = 6.dp)
+            )
 
             OptionSelector("Shot", textOptions = shotOptions, selectedIndex = shotIndex, onSelect = { viewModel.selectShot(it) })
-            HorizontalDivider(color = Color.LightGray.copy(alpha = 0.3f), thickness = 1.dp, modifier = Modifier.padding(vertical = 6.dp))
+            HorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f), thickness = 1.dp, modifier = Modifier.padding(vertical = 6.dp))
 
             OptionSelector("Select", iconOptions = viewModel.selectIcons, selectedIndex = selectIndex, onSelect = { viewModel.selectSelect(it) })
-            HorizontalDivider(color = Color.LightGray.copy(alpha = 0.3f), thickness = 1.dp, modifier = Modifier.padding(vertical = 6.dp))
+            HorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f), thickness = 1.dp, modifier = Modifier.padding(vertical = 6.dp))
 
             OptionSelector("Size", iconOptions = viewModel.sizeIcons, selectedIndex = sizeIndex, onSelect = { viewModel.selectSize(it) })
-            HorizontalDivider(color = Color.LightGray.copy(alpha = 0.3f), thickness = 1.dp, modifier = Modifier.padding(vertical = 6.dp))
+            HorizontalDivider(color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.1f), thickness = 1.dp, modifier = Modifier.padding(vertical = 6.dp))
 
             OptionSelector("Ice", iconOptions = viewModel.iceIcons, selectedIndex = iceIndex, onSelect = { viewModel.selectIce(it) })
 
@@ -163,14 +167,14 @@ fun DetailsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text("Total Amount", style = MaterialTheme.typography.bodyLarge)
-                Text("$${"%.2f".format(totalPrice)}", fontWeight = FontWeight.Bold)
+                Text("Total Amount", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onBackground)
+                Text("$${"%.2f".format(totalPrice)}", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
             }
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF324A59)),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
                 onClick = {
                     val cartItem = CartItem(
                         id = coffeeItem.id,
@@ -182,7 +186,7 @@ fun DetailsScreen(
                         select = selectOptions[selectIndex],
                         size = sizeOptions[sizeIndex],
                         ice = iceOptions[iceIndex],
-                        userEmail = currentAccountState?.value?.email.orEmpty()
+                        userEmail = currentAccountState.value?.email.orEmpty()
                     )
                     cartViewModel.addToCart(cartItem)
                     navController.navigate("cart")
@@ -192,7 +196,7 @@ fun DetailsScreen(
                     .height(48.dp),
                 shape = RoundedCornerShape(24.dp)
             ) {
-                Text("Add to Cart")
+                Text("Add to Cart", color = MaterialTheme.colorScheme.onPrimary)
             }
         }
     }

@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import com.example.codecup.viewmodel.AccountViewModel
 import kotlinx.coroutines.flow.StateFlow
 import com.example.codecup.data.model.Account
+import androidx.compose.foundation.background
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,8 +63,9 @@ fun RedeemScreen(
     )
     val currentAccountState = accountViewModel.currentAccount.collectAsState()
     val currentAccount = currentAccountState.value
+
     Scaffold(
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
@@ -73,7 +75,7 @@ fun RedeemScreen(
                             modifier = Modifier.align(Alignment.Center),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleLarge.copy(
-                                color = Color(0xFF324A59),
+                                color = MaterialTheme.colorScheme.onBackground,
                                 fontWeight = FontWeight.Bold
                             )
                         )
@@ -81,11 +83,15 @@ fun RedeemScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.background
                 )
             )
         }
@@ -93,6 +99,7 @@ fun RedeemScreen(
         Column(
             modifier = Modifier
                 .padding(horizontal = 24.dp)
+                .background(MaterialTheme.colorScheme.background)
         ) {
             LazyColumn(contentPadding = padding) {
                 items(items) { item ->
@@ -114,8 +121,11 @@ fun RedeemScreen(
                                     ).show()
                                 },
                                 onFailure = {
-                                    Toast.makeText(context, "Not enough points", Toast.LENGTH_SHORT)
-                                        .show()
+                                    Toast.makeText(
+                                        context,
+                                        "Not enough points",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                             )
                         }
@@ -125,7 +135,6 @@ fun RedeemScreen(
         }
     }
 }
-
 
 fun handleRedeem(
     rewardItemName: String,

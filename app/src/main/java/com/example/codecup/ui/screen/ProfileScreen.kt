@@ -41,7 +41,7 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = vi
 
     var name: String by remember { mutableStateOf("") }
     var phone: String by remember { mutableStateOf("") }
-    val email: String = viewModel.profile.value?.email ?: "" // Fixed: don't allow editing
+    val email: String = viewModel.profile.value?.email ?: ""
     var address: String by remember { mutableStateOf("") }
 
     var editingField by remember { mutableStateOf<String?>(null) }
@@ -58,26 +58,30 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = vi
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .padding(horizontal = 24.dp)
     ) {
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Header
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             IconButton(onClick = { navController.popBackStack() }) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back",
+                    tint = MaterialTheme.colorScheme.onBackground
+                )
             }
             Spacer(modifier = Modifier.width(100.dp))
             Text(
                 text = "Profile",
                 style = MaterialTheme.typography.titleMedium.copy(
                     fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp
-                ) ,
+                    fontSize = 20.sp,
+                    color = MaterialTheme.colorScheme.onBackground
+                ),
                 textAlign = TextAlign.Center
             )
         }
@@ -121,7 +125,6 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = vi
             isEditingEnabled = false
         )
 
-
         EditableProfileField(
             icon = R.drawable.ic_location,
             label = "Address",
@@ -143,17 +146,17 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = vi
                 .fillMaxWidth()
                 .padding(vertical = 24.dp)
                 .height(48.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF324A59)),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             shape = RoundedCornerShape(24.dp)
         ) {
-            Text("Log Out", color = Color.White)
+            Text("Log Out", color = MaterialTheme.colorScheme.onPrimary)
         }
 
         if (showLogoutDialog) {
             AlertDialog(
                 onDismissRequest = { showLogoutDialog = false },
-                title = { Text("Log out") },
-                text = { Text("Are you sure to log out?") },
+                title = { Text("Log out", color = MaterialTheme.colorScheme.onBackground) },
+                text = { Text("Are you sure to log out?", color = MaterialTheme.colorScheme.onBackground) },
                 confirmButton = {
                     TextButton(
                         onClick = {
@@ -163,14 +166,15 @@ fun ProfileScreen(navController: NavController, viewModel: ProfileViewModel = vi
                             }
                         }
                     ) {
-                        Text("Yes")
+                        Text("Yes", color = MaterialTheme.colorScheme.primary)
                     }
                 },
                 dismissButton = {
                     TextButton(onClick = { showLogoutDialog = false }) {
-                        Text("Cancel")
+                        Text("Cancel", color = MaterialTheme.colorScheme.primary)
                     }
-                }
+                },
+                containerColor = MaterialTheme.colorScheme.surface
             )
         }
     }

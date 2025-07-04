@@ -27,7 +27,7 @@ import com.example.codecup.viewmodel.LoginViewModel
 import android.widget.Toast
 import com.example.codecup.viewmodel.AccountViewModel
 import com.example.codecup.navigation.Screen
-
+import androidx.compose.material3.OutlinedTextFieldDefaults
 @Composable
 fun LoginScreen(
     navController: NavController,
@@ -42,14 +42,24 @@ fun LoginScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White)
+            .background(MaterialTheme.colorScheme.background)
             .padding(24.dp),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text("Welcome Back!", style = MaterialTheme.typography.headlineSmall)
+        Text(
+            "Welcome Back!",
+            style = MaterialTheme.typography.headlineSmall,
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
         Spacer(Modifier.height(8.dp))
-        Text("Login to your account", style = MaterialTheme.typography.bodyMedium, color = Color.Gray)
+
+        Text(
+            "Login to your account",
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
+        )
 
         Spacer(Modifier.height(24.dp))
 
@@ -58,7 +68,16 @@ fun LoginScreen(
             onValueChange = viewModel::onEmailChange,
             label = { Text("Email") },
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                cursorColor = MaterialTheme.colorScheme.primary,
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground
+            )
         )
 
         Spacer(Modifier.height(12.dp))
@@ -69,7 +88,16 @@ fun LoginScreen(
             label = { Text("Password") },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp)
+            shape = RoundedCornerShape(12.dp),
+            colors = OutlinedTextFieldDefaults.colors(
+                focusedBorderColor = MaterialTheme.colorScheme.primary,
+                unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                focusedLabelColor = MaterialTheme.colorScheme.primary,
+                unfocusedLabelColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
+                cursorColor = MaterialTheme.colorScheme.primary,
+                focusedTextColor = MaterialTheme.colorScheme.onBackground,
+                unfocusedTextColor = MaterialTheme.colorScheme.onBackground
+            )
         )
 
         Spacer(Modifier.height(24.dp))
@@ -91,17 +119,20 @@ fun LoginScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(50.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF324A59)),
+            colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
             shape = RoundedCornerShape(24.dp),
             enabled = !isLoading
         ) {
-            Text("Login", color = Color.White)
+            Text("Login", color = MaterialTheme.colorScheme.onPrimary)
         }
 
         Spacer(Modifier.height(12.dp))
 
         TextButton(onClick = { navController.navigate("signup") }) {
-            Text("Don't have an account? Sign up", color = Color(0xFF324A59))
+            Text(
+                "Don't have an account? Sign up",
+                color = MaterialTheme.colorScheme.primary
+            )
         }
     }
 }

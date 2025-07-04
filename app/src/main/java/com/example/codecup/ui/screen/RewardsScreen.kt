@@ -53,7 +53,7 @@ fun RewardsScreen(
                 AppBottomNav(navController)
             }
         },
-        containerColor = Color.White
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -63,11 +63,10 @@ fun RewardsScreen(
         ) {
             Spacer(modifier = Modifier.height(12.dp))
 
-            // Loyalty Card section
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF2E3A59))
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Column(
                     modifier = Modifier
@@ -75,12 +74,22 @@ fun RewardsScreen(
                         .padding(16.dp)
                 ) {
                     Row(
-                        modifier = Modifier.fillMaxWidth().background(Color(0xFF324A59)),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(MaterialTheme.colorScheme.primary),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Loyalty card", color = Color.White, fontWeight = FontWeight.Medium)
-                        Text("${stampCount.coerceAtMost(8)}/8", color = Color.White, fontSize = 14.sp)
+                        Text(
+                            "Loyalty card",
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            fontWeight = FontWeight.Medium
+                        )
+                        Text(
+                            "${stampCount.coerceAtMost(8)}/8",
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            fontSize = 14.sp
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -92,7 +101,7 @@ fun RewardsScreen(
                                 rewardsViewModel.resetStamps()
                             },
                         shape = RoundedCornerShape(12.dp),
-                        colors = CardDefaults.cardColors(containerColor = Color.White)
+                        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
                     ) {
                         Row(
                             modifier = Modifier
@@ -106,7 +115,10 @@ fun RewardsScreen(
                                 Icon(
                                     painter = painterResource(id = R.drawable.ic_coffee_stamp),
                                     contentDescription = null,
-                                    tint = if (filled) Color(0xFF6D4C41) else Color.LightGray,
+                                    tint = if (filled)
+                                        MaterialTheme.colorScheme.tertiary
+                                    else
+                                        MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f),
                                     modifier = Modifier.size(32.dp)
                                 )
                             }
@@ -117,11 +129,10 @@ fun RewardsScreen(
 
             Spacer(modifier = Modifier.height(24.dp))
 
-            // My Points + Redeem Button
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(containerColor = Color(0xFF324A59))
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)
             ) {
                 Row(
                     modifier = Modifier
@@ -131,29 +142,28 @@ fun RewardsScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column {
-                        Text("My Points:", color = Color.White, fontSize = 16.sp)
+                        Text("My Points:", color = MaterialTheme.colorScheme.onPrimary, fontSize = 16.sp)
                         Text(
                             text = totalPoints.toString(),
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             fontSize = 28.sp,
                             fontWeight = FontWeight.Bold
                         )
                     }
 
                     Button(
-                        onClick = {
-                            navController.navigate("redeem")
-                        },
+                        onClick = { navController.navigate("redeem") },
                         shape = RoundedCornerShape(50),
                         colors = ButtonDefaults.buttonColors(
-                            containerColor = Color(0xFF6887A4),
-                            contentColor = Color.White
+                            containerColor = MaterialTheme.colorScheme.secondary,
+                            contentColor = MaterialTheme.colorScheme.onSecondary
                         )
                     ) {
                         Text("Redeem drinks")
                     }
                 }
             }
+
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -161,7 +171,12 @@ fun RewardsScreen(
             ) {
                 Spacer(modifier = Modifier.height(24.dp))
 
-                Text("History Rewards", fontWeight = FontWeight.Bold)
+                Text(
+                    "History Rewards",
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+
                 Spacer(modifier = Modifier.height(12.dp))
 
                 LazyColumn(
@@ -176,15 +191,15 @@ fun RewardsScreen(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text(reward.name)
+                                Text(reward.name, color = MaterialTheme.colorScheme.onBackground)
                                 val text = if (reward.points >= 0) "+${reward.points}" else "${reward.points}"
-                                Text(text, fontWeight = FontWeight.Medium)
+                                Text(text, fontWeight = FontWeight.Medium, color = MaterialTheme.colorScheme.onBackground)
                             }
                             Text(
                                 text = SimpleDateFormat("dd MMM | HH:mm", Locale.getDefault())
                                     .format(Date(reward.timestamp)),
                                 fontSize = 12.sp,
-                                color = Color.Gray
+                                color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                             )
                         }
                     }

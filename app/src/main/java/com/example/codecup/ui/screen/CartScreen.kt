@@ -52,7 +52,7 @@ fun CartScreen(
     val totalPrice = viewModel.getTotalPrice()
 
     Scaffold(
-        containerColor = Color.White,
+        containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
@@ -62,7 +62,7 @@ fun CartScreen(
                             modifier = Modifier.align(Alignment.Center),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleLarge.copy(
-                                color = Color(0xFF324A59),
+                                color = MaterialTheme.colorScheme.primary,
                                 fontWeight = FontWeight.Bold
                             )
                         )
@@ -70,11 +70,15 @@ fun CartScreen(
                 },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.background
                 )
             )
         }
@@ -108,34 +112,41 @@ fun CartScreen(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
-                    Text("Total Price", style = MaterialTheme.typography.bodySmall)
-                    Text("$${"%.2f".format(totalPrice)}", fontWeight = FontWeight.Bold, fontSize = 26.sp)
+                    Text(
+                        "Total Price",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                    Text(
+                        "$${"%.2f".format(totalPrice)}",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 26.sp,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                 }
 
                 Button(
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF324A59)),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    ),
                     onClick = {
                         ordersViewModel.saveCartAsOrders(viewModel.cartItems, profileViewModel.address)
                         rewardsViewModel.addRewardsFromCartItems(viewModel.cartItems)
                         viewModel.clearCart()
-                        navController.navigate("order_success") },
+                        navController.navigate("order_success")
+                    },
                     shape = RoundedCornerShape(25.dp),
                     contentPadding = PaddingValues(horizontal = 26.dp, vertical = 12.dp)
                 ) {
-                    Icon(painter = painterResource(id = R.drawable.ic_cart), contentDescription = null)
+                    Icon(
+                        painter = painterResource(id = R.drawable.ic_cart),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
                     Spacer(Modifier.width(8.dp))
-                    Text("Checkout")
-
+                    Text("Checkout", color = MaterialTheme.colorScheme.onPrimary)
                 }
             }
         }
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun PreviewCartScreen() {
-    val navController = rememberNavController()
-    CartScreen(navController = navController)
-}
-

@@ -34,8 +34,9 @@ import com.example.codecup.viewmodel.RewardsViewModel
 import androidx.navigation.NavController
 
 @Composable
-fun CartPreview(cartViewModel: CartViewModel){
+fun CartPreview(cartViewModel: CartViewModel) {
     val cartItems = cartViewModel.cartItems
+    val total = cartItems.sumOf { it.price }
 
     Column(
         modifier = Modifier
@@ -49,6 +50,7 @@ fun CartPreview(cartViewModel: CartViewModel){
             Text(
                 text = "Your Cart",
                 style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onBackground,
                 textAlign = TextAlign.Center
             )
         }
@@ -74,35 +76,45 @@ fun CartPreview(cartViewModel: CartViewModel){
                     Spacer(modifier = Modifier.width(12.dp))
 
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(item.name, fontWeight = FontWeight.SemiBold)
+                        Text(
+                            item.name,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
                         Text(
                             "${item.shot}, ${item.select}, ${item.size}, ${item.ice}",
                             style = MaterialTheme.typography.bodySmall,
-                            color = Color.Gray
+                            color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.6f)
                         )
                     }
 
                     Column(horizontalAlignment = Alignment.End) {
-                        Text("x${item.quantity}", style = MaterialTheme.typography.bodyMedium)
+                        Text(
+                            "x${item.quantity}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onBackground
+                        )
                         Text(
                             "$${"%.2f".format(item.price)}",
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onBackground
                         )
                     }
                 }
             }
         }
 
-        Divider(Modifier.padding(vertical = 12.dp))
-
-        val total = cartItems.sumOf { it.price }
+        Divider(
+            Modifier.padding(vertical = 12.dp),
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.15f)
+        )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            Text("Total", style = MaterialTheme.typography.bodyLarge)
-            Text("$${"%.2f".format(total)}", fontWeight = FontWeight.Bold)
+            Text("Total", style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onBackground)
+            Text("$${"%.2f".format(total)}", fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
         }
     }
 }
