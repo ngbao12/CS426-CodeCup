@@ -1,8 +1,8 @@
 package com.example.codecup.ui.theme
 
-import androidx.compose.ui.graphics.Color
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.ui.graphics.Color
 
 // Light mode colors
 val LightColorScheme = lightColorScheme(

@@ -2,16 +2,16 @@ package com.example.codecup.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.room.Room
+import com.example.codecup.data.local.AppDatabase
 import com.example.codecup.data.model.UserProfile
+import com.example.codecup.data.repository.UserProfileRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import com.example.codecup.data.local.AppDatabase
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import com.example.codecup.data.repository.UserProfileRepository
 
 class ProfileViewModel(
     application: Application,

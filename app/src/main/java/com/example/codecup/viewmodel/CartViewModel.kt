@@ -1,20 +1,17 @@
 package com.example.codecup.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-import com.example.codecup.data.local.AppDatabase
-import com.example.codecup.data.model.CartItem
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.Dispatchers
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.example.codecup.data.local.DatabaseProvider
+import com.example.codecup.data.model.CartItem
 import com.example.codecup.data.model.isSameAs
 import com.example.codecup.data.repository.CartRepository
-import com.example.codecup.data.local.DatabaseProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CartViewModel(
     application: Application,

@@ -6,10 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.codecup.data.repository.AccountRepository
 import androidx.lifecycle.viewModelScope
 import com.example.codecup.data.local.DatabaseProvider
 import com.example.codecup.data.model.Account
+import com.example.codecup.data.repository.AccountRepository
 import kotlinx.coroutines.launch
 
 class SignUpViewModel(private val repository: AccountRepository) : ViewModel() {

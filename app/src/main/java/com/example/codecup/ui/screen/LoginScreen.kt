@@ -1,5 +1,6 @@
 package com.example.codecup.ui.screen
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,21 +14,20 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.codecup.viewmodel.LoginViewModel
-import android.widget.Toast
-import com.example.codecup.viewmodel.AccountViewModel
 import com.example.codecup.navigation.Screen
-import androidx.compose.material3.OutlinedTextFieldDefaults
+import com.example.codecup.viewmodel.AccountViewModel
+import com.example.codecup.viewmodel.LoginViewModel
+
 @Composable
 fun LoginScreen(
     navController: NavController,

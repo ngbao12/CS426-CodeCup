@@ -1,14 +1,14 @@
 package com.example.codecup.viewmodel
 
 
+import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.codecup.ui.components.details.IconData
 import com.example.codecup.ui.components.details.getIceIcons
 import com.example.codecup.ui.components.details.getSelectIcons
 import com.example.codecup.ui.components.details.getSizeIcons
-import androidx.compose.runtime.State
-import android.util.Log
-import com.example.codecup.ui.components.details.IconData
 
 
 class DetailsViewModel : ViewModel() {

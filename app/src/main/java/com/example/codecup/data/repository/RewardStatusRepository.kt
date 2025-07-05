@@ -1,11 +1,7 @@
 package com.example.codecup.data.repository
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
-import com.example.codecup.data.model.RewardStatus
 import com.example.codecup.data.local.RewardStatusDao
+import com.example.codecup.data.model.RewardStatus
 
 class RewardStatusRepository(private val dao: RewardStatusDao, private val userEmail: String) {
 

@@ -1,6 +1,7 @@
 package com.example.codecup.navigation
-import com.example.codecup.R
+
 import android.net.Uri
+import com.example.codecup.R
 import com.example.codecup.data.model.CoffeeItem
 
 sealed class Screen(val route: String, val title: String, val icon: Int) {

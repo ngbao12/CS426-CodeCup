@@ -1,25 +1,22 @@
 package com.example.codecup.viewmodel
 
 import android.app.Application
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.room.Room
-import com.example.codecup.data.local.AppDatabase
+import com.example.codecup.data.local.DatabaseProvider
+import com.example.codecup.data.model.CartItem
 import com.example.codecup.data.model.RewardItem
 import com.example.codecup.data.repository.RewardRepository
+import com.example.codecup.data.repository.RewardStatusRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import com.example.codecup.data.model.CartItem
-import com.example.codecup.data.local.DatabaseProvider
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import com.example.codecup.data.repository.RewardStatusRepository
 
 class RewardsViewModel(
     application: Application,

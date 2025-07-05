@@ -3,7 +3,7 @@ package com.example.codecup.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.codecup.R
 import com.example.codecup.data.model.CoffeeItem
-import java.util.*
+import java.util.Calendar
 
 class HomeViewModel : ViewModel() {
 
