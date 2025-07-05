@@ -37,10 +37,10 @@ fun CoffeeList(
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
-        contentPadding = PaddingValues(vertical = 4.dp),
+        contentPadding = PaddingValues(bottom = 100.dp), // ensure space above bottom bar
         verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxSize()
     ) {
         items(coffeeList) { coffee ->
             Card(
@@ -80,4 +80,3 @@ fun CoffeeList(
         }
     }
 }
-

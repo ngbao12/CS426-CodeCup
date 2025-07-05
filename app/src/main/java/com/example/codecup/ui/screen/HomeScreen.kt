@@ -1,12 +1,12 @@
 package com.example.codecup.ui.screen
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -43,7 +43,16 @@ fun HomeScreen(
     Scaffold(
         containerColor = backgroundColor,
         topBar = {
-            AppHeader(greeting = viewModel.getGreeting(),userName = profileViewModel.userName, navController = navController)
+            AppHeader(
+                greeting = viewModel.getGreeting(),
+                userName = profileViewModel.userName,
+                navController = navController
+            )
+        },
+        bottomBar = {
+            Box(modifier = Modifier.padding(horizontal = 20.dp, vertical = 12.dp)) {
+                AppBottomNav(navController)
+            }
         }
     ) { padding ->
         Column(
@@ -65,27 +74,27 @@ fun HomeScreen(
             Spacer(modifier = Modifier.height(20.dp))
 
             Surface(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize(),
                 color = primaryContainer,
-                shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp),
+                shape = RoundedCornerShape(32.dp),
                 shadowElevation = 8.dp
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = 20.dp, vertical = 20.dp),
-                    verticalArrangement = Arrangement.SpaceBetween
+                        .padding(horizontal = 20.dp, vertical = 20.dp)
                 ) {
-                    Column {
-                        Spacer(modifier = Modifier.height(15.dp))
-                        Text(
-                            text = "Choose your coffee",
-                            style = MaterialTheme.typography.titleMedium.copy(
-                                color = onPrimary
-                            )
+                    Text(
+                        text = "Choose your coffee",
+                        style = MaterialTheme.typography.titleMedium.copy(
+                            color = onPrimary
                         )
-                        Spacer(modifier = Modifier.height(20.dp))
+                    )
 
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Box(modifier = Modifier.weight(1f)) {
                         CoffeeList(
                             coffeeList = viewModel.coffeeList,
                             onItemClick = { coffeeItem ->
@@ -93,12 +102,8 @@ fun HomeScreen(
                             }
                         )
                     }
-
-                    AppBottomNav(navController = navController)
                 }
             }
         }
     }
 }
-
-
